@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import SectionHeading from "./Shared/SectionHeading";
 import StaggerChildren, { StaggerItem } from "./Motion/StaggerChildren";
-import { EASE_HOVER } from "./Motion/variants";
+import { cardHover } from "./Motion/variants";
 import { useReducedMotion } from "./Motion/useReducedMotion";
 import {
     Shield,
@@ -86,11 +86,7 @@ const FeaturesSection: React.FC = () => {
                         <StaggerItem key={service.title} className="h-full">
                             <motion.div
                                 className="border-[3px] border-stone-700 bg-stone-900 p-8 cursor-default h-full flex flex-col"
-                                whileHover={prefersReduced ? undefined : {
-                                    borderColor: "#CA8A04",
-                                    y: -2,
-                                    transition: { duration: 0.2, ease: EASE_HOVER },
-                                }}
+                                whileHover={prefersReduced ? undefined : cardHover}
                             >
                                 <service.icon
                                     className="text-yellow-600 mb-4"

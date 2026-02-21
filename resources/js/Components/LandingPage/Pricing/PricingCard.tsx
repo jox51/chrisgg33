@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import PlanFeatureListItem from "./PlanFeatureListItem";
 import { trackButtonClick } from "../../../utils/gtmUtils";
-import { ctaButtonHover, ctaButtonTap, EASE_HOVER } from "../Motion/variants";
+import { ctaButtonHover, ctaButtonTap, cardHover, cardHoverPopular } from "../Motion/variants";
 import { useReducedMotion } from "../Motion/useReducedMotion";
 
 interface PricingCardProps {
@@ -36,11 +36,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
                     ? "border-yellow-600 bg-stone-900"
                     : "border-stone-700 bg-stone-900"
             }`}
-            whileHover={prefersReduced ? undefined : {
-                borderColor: isPopular ? undefined : "#78716C",
-                y: -2,
-                transition: { duration: 0.2, ease: EASE_HOVER },
-            }}
+            whileHover={prefersReduced ? undefined : (isPopular ? cardHoverPopular : cardHover)}
         >
             {isPopular && (
                 <div className="absolute top-0 right-0 bg-yellow-600 text-stone-950 px-3 py-1 font-mono text-xs uppercase tracking-wider font-bold">

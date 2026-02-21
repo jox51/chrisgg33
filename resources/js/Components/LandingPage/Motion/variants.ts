@@ -64,10 +64,34 @@ export const createStaggerContainer = (
     },
 });
 
-// Card hover (brutalist: border color shift + subtle lift)
+// Card hover (brutalist: border color shift + lift + gold atmospheric shadow)
 export const cardHover = {
     borderColor: "#CA8A04",
     y: -2,
+    boxShadow:
+        "0px 0px 16px 1px rgba(202, 138, 4, 0.45), 0px 0px 40px 8px rgba(202, 138, 4, 0.15)",
+    transition: {
+        duration: 0.2,
+        ease: EASE_HOVER,
+    },
+};
+
+// Popular pricing card: resting gold border already present — deeper shadow, same lift
+export const cardHoverPopular = {
+    y: -2,
+    boxShadow:
+        "0px 0px 20px 2px rgba(202, 138, 4, 0.55), 0px 0px 52px 10px rgba(202, 138, 4, 0.2)",
+    transition: {
+        duration: 0.2,
+        ease: EASE_HOVER,
+    },
+};
+
+// Dense list cards (HowItWorks): thinner border, no y-lift, lighter atmosphere
+export const cardHoverSubtle = {
+    borderColor: "#CA8A04",
+    boxShadow:
+        "0px 0px 14px 1px rgba(202, 138, 4, 0.4), 0px 0px 32px 6px rgba(202, 138, 4, 0.12)",
     transition: {
         duration: 0.2,
         ease: EASE_HOVER,

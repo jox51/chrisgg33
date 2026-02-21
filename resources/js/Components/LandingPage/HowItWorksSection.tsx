@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import SectionHeading from "./Shared/SectionHeading";
 import { ScrollReveal } from "./Motion";
 import StaggerChildren, { StaggerItem } from "./Motion/StaggerChildren";
-import { ctaButtonHover, ctaButtonTap, EASE_HOVER } from "./Motion/variants";
+import { ctaButtonHover, ctaButtonTap, cardHoverSubtle } from "./Motion/variants";
 import { useReducedMotion } from "./Motion/useReducedMotion";
 import {
     Swords,
@@ -76,10 +76,7 @@ const HowItWorksSection: React.FC = () => {
                         <StaggerItem key={benefit.title}>
                             <motion.div
                                 className="flex items-start gap-4 p-5 border-[2px] border-stone-700 bg-stone-950"
-                                whileHover={prefersReduced ? undefined : {
-                                    borderColor: "#CA8A04",
-                                    transition: { duration: 0.2, ease: EASE_HOVER },
-                                }}
+                                whileHover={prefersReduced ? undefined : cardHoverSubtle}
                             >
                                 <benefit.icon
                                     className="text-yellow-600 flex-shrink-0 mt-1"
