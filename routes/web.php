@@ -62,6 +62,11 @@ Route::post('paypal/webhook', [PayPalWebhookController::class, 'handleWebhook'])
 Route::post('whop/webhook', [WhopWebhookController::class, 'handleWebhook'])
     ->name('whop.webhook');
 
+// Whop checkout routes (public — no auth required)
+Route::get('/subscribe/whop/{planType}', [WhopController::class, 'createSubscription'])->name('whop.subscribe.checkout');
+Route::get('/whop/subscription-success', [WhopController::class, 'subscriptionSuccess'])->name('whop.subscription.success');
+Route::get('/whop/subscription-cancel', [WhopController::class, 'subscriptionCancel'])->name('whop.subscription.cancel');
+
     // Blog routes
 $blogBasePath = config('blog.base_path', 'blog');
 $blogAdminPath = config('blog.admin_path', 'admin');
@@ -96,10 +101,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/paypal/subscription-cancel', [PayPalController::class, 'subscriptionCancel'])->name('paypal.subscription.cancel');
     Route::get('/paypal/billing-portal', [PayPalController::class, 'redirectToBillingPortal'])->name('paypal.billing.portal');
 
-    // Whop subscription routes
-    Route::get('/subscribe/whop/{planType}', [WhopController::class, 'createSubscription'])->name('whop.subscribe.checkout');
-    Route::get('/whop/subscription-success', [WhopController::class, 'subscriptionSuccess'])->name('whop.subscription.success');
-    Route::get('/whop/subscription-cancel', [WhopController::class, 'subscriptionCancel'])->name('whop.subscription.cancel');
+    // Whop billing portal (still requires auth)
     Route::get('/whop/billing-portal', [WhopController::class, 'redirectToBillingPortal'])->name('whop.billing.portal');
 
     // Legacy Stripe checkout routes (keeping for backward compatibility)

@@ -1,6 +1,5 @@
 import React from "react";
 import PlanFeatureListItem from "./PlanFeatureListItem";
-import { Link } from "@inertiajs/react";
 import { trackButtonClick } from "../../../utils/gtmUtils";
 
 interface PricingCardProps {
@@ -12,7 +11,6 @@ interface PricingCardProps {
     buttonLink: string;
     isPopular?: boolean;
     popularText?: string;
-    savingsText?: string;
     aosDelay?: string;
     borderColor?: string;
     hoverBorderColor?: string;
@@ -24,9 +22,6 @@ interface PricingCardProps {
     buttonHoverGradientFrom: string;
     buttonHoverGradientTo: string;
     hasProfitGlow?: boolean;
-    isAuthenticated: boolean;
-    isUserSubscribed: boolean;
-    paymentProvider?: "stripe" | "paypal" | "whop";
 }
 
 const PricingCard: React.FC<PricingCardProps> = ({
@@ -38,7 +33,6 @@ const PricingCard: React.FC<PricingCardProps> = ({
     buttonLink,
     isPopular = false,
     popularText = "Most Popular",
-    savingsText,
     aosDelay = "",
     borderColor = "border-gray-700",
     hoverBorderColor = "hover:border-blue-500/50",
@@ -50,9 +44,6 @@ const PricingCard: React.FC<PricingCardProps> = ({
     buttonHoverGradientFrom,
     buttonHoverGradientTo,
     hasProfitGlow = false,
-    isAuthenticated,
-    isUserSubscribed,
-    paymentProvider = "stripe",
 }) => {
     const cardClasses =
         isPopular && gradientFrom && gradientTo
@@ -63,35 +54,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
         hasProfitGlow ? " profit-glow" : ""
     }`;
 
-    // Determine button text and link based on authentication and subscription status
-    const getButtonText = () => {
-        if (isUserSubscribed) {
-            return "Go to App";
-        }
-        if (!isAuthenticated) {
-            return "Sign Up to Subscribe";
-        }
-        return buttonText;
-    };
-
-    const getButtonLink = () => {
-        if (isUserSubscribed) {
-            return "/app";
-        }
-        if (!isAuthenticated) {
-            return "/register";
-        }
-        if (paymentProvider === "paypal") {
-            return `/subscribe/paypal/${buttonLink}`;
-        }
-        if (paymentProvider === "whop") {
-            return `/subscribe/whop/${buttonLink}`;
-        }
-        return `/subscribe/${buttonLink}`;
-    };
-
-    const actualButtonText = getButtonText();
-    const actualButtonLink = getButtonLink();
+    const actualButtonLink = `/subscribe/whop/${buttonLink}`;
 
     return (
         <div
@@ -109,11 +72,6 @@ const PricingCard: React.FC<PricingCardProps> = ({
                 <h3 className="text-2xl font-bold text-white mb-4">
                     {planName}
                 </h3>
-                {savingsText && (
-                    <div className="text-green-400 font-semibold mb-4">
-                        {savingsText}
-                    </div>
-                )}
                 <div className="mb-6">
                     <span className={`text-5xl font-black ${priceColor}`}>
                         {price}
@@ -132,26 +90,14 @@ const PricingCard: React.FC<PricingCardProps> = ({
                 href={actualButtonLink}
                 className={buttonClasses}
                 onClick={() => {
-                    // Determine appropriate button name based on user state
-                    let buttonName = "select_plan";
-                    if (isUserSubscribed) {
-                        buttonName = "go_to_app";
-                    } else if (!isAuthenticated) {
-                        buttonName = "sign_up_to_subscribe";
-                    } else {
-                        buttonName = `select_plan_${planName.toLowerCase().replace(/\s+/g, '_')}`;
-                    }
-                    
-                    trackButtonClick(buttonName, {
+                    trackButtonClick(`select_plan_${planName.toLowerCase().replace(/\s+/g, '_')}`, {
                         button_location: "pricing",
                         plan_name: planName,
                         plan_price: price,
-                        user_status: isAuthenticated ? "authenticated" : "visitor",
-                        user_subscribed: isUserSubscribed,
                     });
                 }}
             >
-                {actualButtonText}
+                {buttonText}
             </a>
         </div>
     );

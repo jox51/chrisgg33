@@ -77,7 +77,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
                     </div>
                     <div className="flex items-center space-x-4">
                         {auth?.user ? (
-                            // Logged in user display
+                            // Logged in user display (admin access)
                             <div className="flex items-center space-x-4">
                                 <div className="flex items-center space-x-3">
                                     <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
@@ -106,21 +106,13 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
                                 </Link>
                             </div>
                         ) : (
-                            // Guest user display
-                            <>
-                                <Link
-                                    href="/login"
-                                    className="text-gray-300 hover:text-white transition-colors"
-                                >
-                                    Log In
-                                </Link>
-                                <Link
-                                    href="/register"
-                                    className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 px-6 py-2 rounded-lg text-white font-semibold transition-all duration-300 transform hover:scale-105"
-                                >
-                                    Get Started
-                                </Link>
-                            </>
+                            // Guest — show Book Now CTA
+                            <a
+                                href="/#pricing"
+                                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 px-6 py-2 rounded-lg text-white font-semibold transition-all duration-300 transform hover:scale-105"
+                            >
+                                Book Now
+                            </a>
                         )}
                     </div>
                 </div>

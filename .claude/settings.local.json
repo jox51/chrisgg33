@@ -4,7 +4,8 @@
       "Bash(composer require:*)",
       "Bash(php artisan:*)",
       "Bash(npm run build:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "WebFetch(domain:dcnumerology.com)"
     ],
     "deny": [],
     "ask": []

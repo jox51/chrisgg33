@@ -64,8 +64,10 @@ return [
 
         'whop' => [
             'enabled' => env('WHOP_ENABLED', false),
-            'monthly_plan_id' => env('WHOP_MONTHLY_PLAN_ID', ''),
-            'yearly_plan_id' => env('WHOP_YEARLY_PLAN_ID', ''),
+            'chris_opposition_plan_id' => env('WHOP_CHRIS_OPPOSITION_PLAN_ID', ''),
+            'strategic_guidance_plan_id' => env('WHOP_STRATEGIC_GUIDANCE_PLAN_ID', ''),
+            'two_hour_plan_id' => env('WHOP_TWO_HOUR_PLAN_ID', ''),
+            'emergency_plan_id' => env('WHOP_EMERGENCY_PLAN_ID', ''),
             'webhook_secret' => env('WHOP_WEBHOOK_SECRET', ''),
         ],
     ],

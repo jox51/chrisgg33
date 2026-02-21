@@ -3,112 +3,109 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class WhopController extends Controller
 {
     /**
-     * Get Whop plan ID based on plan type
+     * Valid plan slugs mapped to their config keys
      */
-    protected function getPlanId(string $planType): ?string
+    protected array $planMap = [
+        'opposition' => 'chris_opposition_plan_id',
+        'guidance' => 'strategic_guidance_plan_id',
+        'two-hour' => 'two_hour_plan_id',
+        'emergency' => 'emergency_plan_id',
+    ];
+
+    /**
+     * Plan display names
+     */
+    protected array $planNames = [
+        'opposition' => 'Oppositional Year Prep',
+        'guidance' => 'Strategic Guidance',
+        'two-hour' => '2.5 Hour Session',
+        'emergency' => 'Emergency Services',
+    ];
+
+    /**
+     * Get Whop plan ID based on plan slug
+     */
+    protected function getPlanId(string $planSlug): ?string
     {
-        $field = $planType === 'monthly' ? 'monthly_plan_id' : 'yearly_plan_id';
-        return config("payment.providers.whop.{$field}");
+        $configKey = $this->planMap[$planSlug] ?? null;
+        if (!$configKey) {
+            return null;
+        }
+        return config("payment.providers.whop.{$configKey}");
     }
 
     /**
-     * Show subscription page with Whop checkout
+     * Show checkout page with Whop embed
      */
     public function createSubscription(Request $request, string $planType)
     {
-        if (!in_array($planType, ['monthly', 'yearly'])) {
+        if (!array_key_exists($planType, $this->planMap)) {
             return redirect()->back()->with('error', 'Invalid plan type.');
         }
 
-        $user = Auth::user();
         $planId = $this->getPlanId($planType);
 
-        // Validate that we have the necessary plan ID
         if (empty($planId)) {
             Log::error('Whop plan ID not configured', [
                 'plan_type' => $planType,
-                'config_key' => "payment.providers.whop.{$planType}_plan_id"
+                'config_key' => "payment.providers.whop.{$this->planMap[$planType]}"
             ]);
-            return redirect()->back()->with('error', 'Whop plan not configured. Please contact support.');
+            return redirect()->back()->with('error', 'Plan not configured. Please contact support.');
         }
 
-        Log::info('Whop subscription attempt', [
+        Log::info('Whop checkout attempt', [
             'plan_id' => $planId,
             'plan_type' => $planType,
-            'user_id' => $user->id
         ]);
 
-        // Render the Whop subscription page with embedded checkout
         return Inertia::render('Subscription/WhopCheckout', [
             'planId' => $planId,
             'planType' => $planType,
-            'userEmail' => $user->email,
-            'userName' => $user->name,
+            'planName' => $this->planNames[$planType] ?? ucfirst($planType),
         ]);
     }
 
     /**
-     * Handle subscription success callback
+     * Handle payment success callback
      */
     public function subscriptionSuccess(Request $request)
     {
-        $user = Auth::user();
         $receiptId = $request->get('receipt_id');
         $planId = $request->get('plan_id');
 
         if (!$receiptId || !$planId) {
-            return redirect()->route('dashboard')->with('error', 'Invalid subscription data.');
+            return redirect('/')->with('error', 'Invalid payment data.');
         }
 
-        try {
-            // Determine plan type based on plan ID
-            $planType = $this->determinePlanType($planId);
+        $planType = $this->determinePlanType($planId);
+        $planName = $this->planNames[$planType] ?? ucfirst($planType);
 
-            // Update user subscription status
-            /** @var \App\Models\User $user */
-            $user->update([
-                'payment_provider' => 'whop',
-                'whop_payment_id' => $receiptId,
-                'subscription_status' => 'active',
-            ]);
+        Log::info('Whop payment success', [
+            'receipt_id' => $receiptId,
+            'plan_type' => $planType,
+        ]);
 
-            Log::info('Whop subscription success', [
-                'user_id' => $user->id,
-                'receipt_id' => $receiptId,
-                'plan_type' => $planType
-            ]);
-
-            return Inertia::render('Subscription/WhopSuccess', [
-                'customerEmail' => $user->email,
-                'receiptId' => $receiptId,
-                'planDescription' => ucfirst($planType) . ' Subscription',
-                'status' => 'active',
-                'message' => 'Subscription activated successfully!'
-            ]);
-
-        } catch (\Exception $e) {
-            Log::error('Whop subscription success error', [
-                'error' => $e->getMessage(),
-                'receipt_id' => $receiptId ?? null
-            ]);
-            return redirect()->back()->with('error', $e->getMessage());
-        }
+        return Inertia::render('Subscription/WhopSuccess', [
+            'receiptId' => $receiptId,
+            'planDescription' => $planName,
+            'status' => 'completed',
+            'message' => 'Payment successful! Thank you for your purchase.',
+        ]);
     }
 
     /**
-     * Handle subscription cancellation
+     * Handle payment cancellation
      */
     public function subscriptionCancel()
     {
         return Inertia::render('Subscription/Cancel', [
-            'message' => 'Subscription cancelled by user.'
+            'message' => 'Payment cancelled.'
         ]);
     }
 
@@ -117,37 +114,20 @@ class WhopController extends Controller
      */
     protected function determinePlanType(string $planId): string
     {
-        $monthlyPlanId = config('payment.providers.whop.monthly_plan_id');
-        $yearlyPlanId = config('payment.providers.whop.yearly_plan_id');
-
-        if ($planId === $yearlyPlanId) {
-            return 'yearly';
+        foreach ($this->planMap as $slug => $configKey) {
+            if (config("payment.providers.whop.{$configKey}") === $planId) {
+                return $slug;
+            }
         }
 
-        return 'monthly';
+        return 'unknown';
     }
 
     /**
-     * Redirect to Whop manage subscription page
+     * Redirect to Whop billing page
      */
     public function redirectToBillingPortal(Request $request)
     {
-        $user = Auth::user();
-
-        if (!$user->whop_payment_id) {
-            return redirect()->back()->with('error', 'No active Whop subscription found.');
-        }
-
-        try {
-            // Redirect to Whop's subscription management page
-            // Users manage their subscriptions directly on Whop
-            return redirect()->away('https://whop.com/hub/');
-        } catch (\Exception $e) {
-            Log::error('Whop billing portal error', [
-                'error' => $e->getMessage(),
-                'user_id' => $user->id
-            ]);
-            return redirect()->back()->with('error', 'Unable to access billing portal.');
-        }
+        return redirect()->away('https://whop.com/hub/');
     }
 }

@@ -1,15 +1,7 @@
 import React from 'react';
-import { Head, Link } from '@inertiajs/react';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head } from '@inertiajs/react';
 
 interface WhopSuccessProps {
-    auth: {
-        user: {
-            name: string;
-            email: string;
-        };
-    };
-    customerEmail: string;
     receiptId: string;
     planDescription: string;
     status: string;
@@ -17,8 +9,6 @@ interface WhopSuccessProps {
 }
 
 export default function WhopSuccess({
-    auth,
-    customerEmail,
     receiptId,
     planDescription,
     status,
@@ -26,23 +16,17 @@ export default function WhopSuccess({
 }: WhopSuccessProps) {
     return (
         <>
-            <Head title="Subscription Successful" />
-            <AuthenticatedLayout
-                header={
-                    <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                        Subscription Confirmed
-                    </h2>
-                }
-            >
-                <div className="py-12">
-                    <div className="mx-auto max-w-4xl sm:px-6 lg:px-8">
-                        <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                            <div className="p-6 text-gray-900">
+            <Head title="Payment Successful" />
+            <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+                <div className="py-12 w-full">
+                    <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+                        <div className="overflow-hidden bg-gray-800 border border-gray-700 shadow-xl rounded-lg">
+                            <div className="p-6 text-white">
                                 {/* Success Icon */}
                                 <div className="text-center mb-8">
-                                    <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <div className="w-20 h-20 bg-green-900/50 border border-green-500/30 rounded-full flex items-center justify-center mx-auto mb-6">
                                         <svg
-                                            className="w-12 h-12 text-green-600"
+                                            className="w-12 h-12 text-green-400"
                                             fill="none"
                                             stroke="currentColor"
                                             viewBox="0 0 24 24"
@@ -56,51 +40,39 @@ export default function WhopSuccess({
                                         </svg>
                                     </div>
 
-                                    <h1 className="text-3xl font-bold text-gray-900 mb-4">
+                                    <h1 className="text-3xl font-bold text-white mb-4">
                                         Payment Successful!
                                     </h1>
 
-                                    <p className="text-lg text-gray-600 mb-2">
-                                        {message || 'Thank you for your subscription!'}
-                                    </p>
-
-                                    <p className="text-sm text-gray-500">
-                                        A confirmation email has been sent to{' '}
-                                        <span className="font-semibold">{customerEmail}</span>
+                                    <p className="text-lg text-gray-300 mb-2">
+                                        {message || 'Thank you for your purchase!'}
                                     </p>
                                 </div>
 
-                                {/* Subscription Details */}
-                                <div className="bg-gray-50 rounded-lg p-6 mb-8">
-                                    <h2 className="text-xl font-bold text-gray-900 mb-6 text-center">
-                                        Subscription Details
+                                {/* Purchase Details */}
+                                <div className="bg-gray-900 rounded-lg p-6 mb-8 border border-gray-700">
+                                    <h2 className="text-xl font-bold text-white mb-6 text-center">
+                                        Purchase Details
                                     </h2>
 
                                     <div className="grid md:grid-cols-2 gap-6">
-                                        <div className="bg-white p-4 rounded-lg border border-gray-200">
-                                            <div className="text-sm text-gray-500 mb-1">Plan</div>
-                                            <div className="text-lg font-semibold text-gray-900">
+                                        <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
+                                            <div className="text-sm text-gray-400 mb-1">Service</div>
+                                            <div className="text-lg font-semibold text-white">
                                                 {planDescription}
                                             </div>
                                         </div>
 
-                                        <div className="bg-white p-4 rounded-lg border border-gray-200">
-                                            <div className="text-sm text-gray-500 mb-1">Status</div>
-                                            <div className="text-lg font-semibold text-green-600 capitalize">
+                                        <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
+                                            <div className="text-sm text-gray-400 mb-1">Status</div>
+                                            <div className="text-lg font-semibold text-green-400 capitalize">
                                                 {status}
                                             </div>
                                         </div>
 
-                                        <div className="bg-white p-4 rounded-lg border border-gray-200">
-                                            <div className="text-sm text-gray-500 mb-1">Email</div>
-                                            <div className="text-lg font-semibold text-gray-900">
-                                                {customerEmail}
-                                            </div>
-                                        </div>
-
-                                        <div className="bg-white p-4 rounded-lg border border-gray-200">
-                                            <div className="text-sm text-gray-500 mb-1">Receipt ID</div>
-                                            <div className="text-sm font-mono text-gray-900 break-all">
+                                        <div className="bg-gray-800 p-4 rounded-lg border border-gray-700 md:col-span-2">
+                                            <div className="text-sm text-gray-400 mb-1">Receipt ID</div>
+                                            <div className="text-sm font-mono text-gray-300 break-all">
                                                 {receiptId}
                                             </div>
                                         </div>
@@ -108,14 +80,14 @@ export default function WhopSuccess({
                                 </div>
 
                                 {/* Next Steps */}
-                                <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
-                                    <h3 className="text-lg font-bold text-blue-900 mb-4">
+                                <div className="bg-blue-900/30 border border-blue-500/30 rounded-lg p-6 mb-8">
+                                    <h3 className="text-lg font-bold text-blue-300 mb-4">
                                         What's Next?
                                     </h3>
-                                    <ul className="space-y-3 text-blue-900">
+                                    <ul className="space-y-3 text-gray-300">
                                         <li className="flex items-start">
                                             <svg
-                                                className="w-5 h-5 text-blue-600 mr-2 mt-0.5 flex-shrink-0"
+                                                className="w-5 h-5 text-blue-400 mr-2 mt-0.5 flex-shrink-0"
                                                 fill="currentColor"
                                                 viewBox="0 0 20 20"
                                             >
@@ -125,11 +97,11 @@ export default function WhopSuccess({
                                                     clipRule="evenodd"
                                                 />
                                             </svg>
-                                            <span>You now have full access to all premium features</span>
+                                            <span>Check your email for your receipt and booking confirmation</span>
                                         </li>
                                         <li className="flex items-start">
                                             <svg
-                                                className="w-5 h-5 text-blue-600 mr-2 mt-0.5 flex-shrink-0"
+                                                className="w-5 h-5 text-blue-400 mr-2 mt-0.5 flex-shrink-0"
                                                 fill="currentColor"
                                                 viewBox="0 0 20 20"
                                             >
@@ -139,11 +111,11 @@ export default function WhopSuccess({
                                                     clipRule="evenodd"
                                                 />
                                             </svg>
-                                            <span>Check your email for your receipt and subscription details</span>
+                                            <span>VK will reach out to schedule your session</span>
                                         </li>
                                         <li className="flex items-start">
                                             <svg
-                                                className="w-5 h-5 text-blue-600 mr-2 mt-0.5 flex-shrink-0"
+                                                className="w-5 h-5 text-blue-400 mr-2 mt-0.5 flex-shrink-0"
                                                 fill="currentColor"
                                                 viewBox="0 0 20 20"
                                             >
@@ -153,45 +125,25 @@ export default function WhopSuccess({
                                                     clipRule="evenodd"
                                                 />
                                             </svg>
-                                            <span>You can manage your subscription at any time through Whop</span>
+                                            <span>You can manage your purchase at any time through Whop</span>
                                         </li>
                                     </ul>
                                 </div>
 
-                                {/* Action Buttons */}
-                                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                                    <Link
-                                        href="/app"
+                                {/* Action Button */}
+                                <div className="flex justify-center">
+                                    <a
+                                        href="/"
                                         className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors duration-200"
                                     >
-                                        <svg
-                                            className="w-5 h-5 mr-2"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth={2}
-                                                d="M13 7l5 5m0 0l-5 5m5-5H6"
-                                            />
-                                        </svg>
-                                        Go to App
-                                    </Link>
-
-                                    <Link
-                                        href="/dashboard"
-                                        className="inline-flex items-center justify-center px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-lg transition-colors duration-200"
-                                    >
-                                        Return to Dashboard
-                                    </Link>
+                                        Return Home
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </AuthenticatedLayout>
+            </div>
         </>
     );
 }

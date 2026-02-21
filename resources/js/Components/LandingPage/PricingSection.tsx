@@ -1,161 +1,74 @@
-import React, { useState } from "react";
+import React from "react";
 import SectionHeading from "./Shared/SectionHeading";
 import PricingCard from "./Pricing/PricingCard";
 
-interface PricingSectionProps {
-    isAuthenticated: boolean;
-    isUserSubscribed: boolean;
-    stripeEnabled?: boolean;
-    paypalEnabled?: boolean;
-    whopEnabled?: boolean;
-    defaultPaymentProvider?: "stripe" | "paypal" | "whop";
-}
-
-const PricingSection: React.FC<PricingSectionProps> = ({
-    isAuthenticated,
-    isUserSubscribed,
-    stripeEnabled = true,
-    paypalEnabled = false,
-    whopEnabled = false,
-    defaultPaymentProvider = "stripe",
-}) => {
-    // Determine the initial payment provider based on what's enabled
-    const getInitialProvider = (): "stripe" | "paypal" | "whop" => {
-        // Count enabled providers
-        const enabledProviders = [
-            stripeEnabled && "stripe",
-            paypalEnabled && "paypal",
-            whopEnabled && "whop"
-        ].filter(Boolean) as ("stripe" | "paypal" | "whop")[];
-
-        // If multiple providers are enabled and default is enabled, use default
-        if (enabledProviders.length > 1 && enabledProviders.includes(defaultPaymentProvider)) {
-            return defaultPaymentProvider;
-        }
-
-        // Otherwise use the first enabled provider
-        if (enabledProviders.length > 0) {
-            return enabledProviders[0];
-        }
-
-        // Fallback to stripe
-        return "stripe";
-    };
-
-    const [paymentProvider, setPaymentProvider] = useState<"stripe" | "paypal" | "whop">(getInitialProvider());
-    // Pricing plans data
-    const monthlyFeatures = [
-        "All Project Types",
-        "Real-Time Alerts",
-        "5 Exchange Connections",
-        "Standard Support",
+const PricingSection: React.FC = () => {
+    const oppositionFeatures = [
+        "Understand Your Enemy Year",
+        "Identify Opposition Patterns",
+        "Timing & Month-by-Month Guidance",
+        "Protective Remedies & Strategies",
+        "Turn Opposition into Teachers",
+        "45 Minute Call With VK",
     ];
 
-    const yearlyFeatures = [
-        "All Monthly Features",
-        "Unlimited Connections",
-        "Priority Support",
-        "Advanced Analytics",
+    const guidanceFeatures = [
+        "Personal Development & Decision Making",
+        "Accountability & Pattern Recognition",
+        "Historical & Symbolic Frameworks",
+        "One-on-One Mentorship Session",
+        "Practical Life Guidance & Reflection",
+    ];
+
+    const twoHourFeatures = [
+        "Extended 2.5 Hour Coaching",
+        "Best Hourly Rate Available",
+        "In-Depth Personal Guidance",
+        "All Strategic Guidance Features",
+    ];
+
+    const emergencyFeatures = [
+        "Available Within 28 Hours",
+        "Priority Scheduling",
+        "Immediate Expert Assistance",
+        "Direct Access to VK",
     ];
 
     return (
         <section id="pricing" className="py-20 bg-gray-900">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <SectionHeading
-                    title="Flexible Plans for Every Trader"
-                    subtitle="Choose the plan that fits your trading needs"
+                    title="Book Your Session With VK"
+                    subtitle="Choose the service that fits your needs"
                     titleClassName="text-white"
                     subtitleClassName="text-gray-400"
                 />
 
-                {/* Payment Provider Toggle - Only show if multiple providers are enabled */}
-                {(stripeEnabled && paypalEnabled) || (stripeEnabled && whopEnabled) || (paypalEnabled && whopEnabled) ? (
-                    <div className="flex justify-center mb-8">
-                        <div className="inline-flex bg-gray-800 rounded-lg p-1 border border-gray-700">
-                            {stripeEnabled && (
-                                <button
-                                    onClick={() => setPaymentProvider("stripe")}
-                                    className={`px-6 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
-                                        paymentProvider === "stripe"
-                                            ? "bg-blue-600 text-white shadow-lg"
-                                            : "text-gray-400 hover:text-white"
-                                    }`}
-                                >
-                                    <span className="flex items-center gap-2">
-                                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.594-7.305h.003z"/>
-                                        </svg>
-                                        Stripe
-                                    </span>
-                                </button>
-                            )}
-                            {paypalEnabled && (
-                                <button
-                                    onClick={() => setPaymentProvider("paypal")}
-                                    className={`px-6 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
-                                        paymentProvider === "paypal"
-                                            ? "bg-blue-600 text-white shadow-lg"
-                                            : "text-gray-400 hover:text-white"
-                                    }`}
-                                >
-                                    <span className="flex items-center gap-2">
-                                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.93 4.778-4.005 7.201-9.138 7.201h-2.19a.563.563 0 0 0-.556.479l-1.187 7.527h-.506l-.24 1.516a.56.56 0 0 0 .554.647h3.882c.46 0 .85-.334.922-.788.06-.26.76-4.852.816-5.09a.932.932 0 0 1 .923-.788h.58c3.76 0 6.705-1.528 7.565-5.946.36-1.847.174-3.388-.777-4.471z"/>
-                                        </svg>
-                                        PayPal
-                                    </span>
-                                </button>
-                            )}
-                            {whopEnabled && (
-                                <button
-                                    onClick={() => setPaymentProvider("whop")}
-                                    className={`px-6 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
-                                        paymentProvider === "whop"
-                                            ? "bg-blue-600 text-white shadow-lg"
-                                            : "text-gray-400 hover:text-white"
-                                    }`}
-                                >
-                                    <span className="flex items-center gap-2">
-                                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
-                                        </svg>
-                                        Whop
-                                    </span>
-                                </button>
-                            )}
-                        </div>
-                    </div>
-                ) : null}
-
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
                     <PricingCard
-                        planName="Monthly"
-                        price="$80"
-                        pricePeriod="per month"
-                        features={monthlyFeatures}
-                        buttonText="Choose Monthly"
-                        buttonLink="monthly"
+                        planName="Oppositional Year Prep"
+                        price="$170"
+                        pricePeriod="one-time"
+                        features={oppositionFeatures}
+                        buttonText="Book Now"
+                        buttonLink="opposition"
                         aosDelay="100"
                         priceColor="text-blue-400"
                         buttonGradientFrom="from-blue-500"
                         buttonGradientTo="to-blue-600"
                         buttonHoverGradientFrom="from-blue-600"
                         buttonHoverGradientTo="to-blue-700"
-                        isAuthenticated={isAuthenticated}
-                        isUserSubscribed={isUserSubscribed}
-                        paymentProvider={paymentProvider}
                     />
 
                     <PricingCard
-                        planName="Yearly"
-                        price="$800"
-                        pricePeriod="per year"
-                        features={yearlyFeatures}
-                        buttonText="Choose Yearly"
-                        buttonLink="yearly"
+                        planName="Strategic Guidance"
+                        price="$280"
+                        pricePeriod="one-time"
+                        features={guidanceFeatures}
+                        buttonText="Schedule Now"
+                        buttonLink="guidance"
                         isPopular={true}
                         popularText="Most Popular"
-                        savingsText="Save $160"
                         aosDelay="200"
                         gradientFrom="from-purple-900/50"
                         gradientTo="to-blue-900/50"
@@ -165,9 +78,36 @@ const PricingSection: React.FC<PricingSectionProps> = ({
                         buttonHoverGradientFrom="from-purple-600"
                         buttonHoverGradientTo="to-blue-700"
                         hasProfitGlow={true}
-                        isAuthenticated={isAuthenticated}
-                        isUserSubscribed={isUserSubscribed}
-                        paymentProvider={paymentProvider}
+                    />
+
+                    <PricingCard
+                        planName="2.5 Hour Session"
+                        price="$440"
+                        pricePeriod="one-time"
+                        features={twoHourFeatures}
+                        buttonText="Book 2.5 Hours"
+                        buttonLink="two-hour"
+                        aosDelay="300"
+                        priceColor="text-emerald-400"
+                        buttonGradientFrom="from-emerald-500"
+                        buttonGradientTo="to-teal-600"
+                        buttonHoverGradientFrom="from-emerald-600"
+                        buttonHoverGradientTo="to-teal-700"
+                    />
+
+                    <PricingCard
+                        planName="Emergency Services"
+                        price="$800"
+                        pricePeriod="one-time"
+                        features={emergencyFeatures}
+                        buttonText="Book Emergency"
+                        buttonLink="emergency"
+                        aosDelay="400"
+                        priceColor="text-red-400"
+                        buttonGradientFrom="from-red-500"
+                        buttonGradientTo="to-orange-600"
+                        buttonHoverGradientFrom="from-red-600"
+                        buttonHoverGradientTo="to-orange-700"
                     />
                 </div>
             </div>
