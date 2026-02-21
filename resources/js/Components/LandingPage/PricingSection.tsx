@@ -60,10 +60,6 @@ const PricingSection: React.FC = () => {
                     subtitle="Choose the service that fits your needs"
                 />
 
-                <p className="text-center font-mono text-xs uppercase tracking-wider text-yellow-600 mb-10 -mt-8">
-                    Use code NEWYEAR2026 for 25% off select services
-                </p>
-
                 <StaggerChildren
                     className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto"
                     stagger={0.08}

@@ -1,6 +1,8 @@
 import React from "react";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
+import { PageProps } from "@/types";
 import { ScrollReveal } from "./Motion";
+import Logo from "../../../images/logo.png";
 
 interface FooterProps {
     laravelVersion?: string;
@@ -11,6 +13,8 @@ interface FooterProps {
 const Footer: React.FC<FooterProps> = ({
     appName,
 }) => {
+    const { socialLinks } = usePage<PageProps>().props;
+
     return (
         <footer className="bg-stone-950 border-t-[3px] border-stone-700">
             <ScrollReveal
@@ -20,9 +24,16 @@ const Footer: React.FC<FooterProps> = ({
             >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div>
-                        <span className="font-serif text-2xl font-bold text-yellow-600 tracking-wide block mb-4">
-                            CHRISGG33
-                        </span>
+                        <div className="flex items-center gap-2 mb-4">
+                            <img
+                                src={Logo}
+                                alt="ChrisGG33"
+                                className="w-10 h-10 object-contain"
+                            />
+                            <span className="font-serif text-2xl font-bold text-yellow-600 tracking-wide">
+                                CHRISGG33
+                            </span>
+                        </div>
                         <p className="text-stone-400 mb-4 max-w-md font-sans text-sm leading-relaxed">
                             Strategic guidance through astrology, numerology, and
                             esoteric knowledge. Personal development, decision making,
@@ -30,12 +41,12 @@ const Footer: React.FC<FooterProps> = ({
                             and symbolic frameworks.
                         </p>
                         <a
-                            href="https://x.com/DCnumerology"
+                            href={socialLinks.twitter}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-stone-500 hover:text-yellow-600 font-mono text-sm uppercase tracking-wider"
                         >
-                            @DCNumerology on X
+                            @ChrisGG33 on X
                         </a>
                     </div>
                     <div className="md:text-right">

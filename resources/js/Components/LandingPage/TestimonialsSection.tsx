@@ -48,7 +48,11 @@ const credentials: Credential[] = [
     },
 ];
 
-const pressNames = ["Billboard", "HuffPost", "Newsweek"];
+const pressOutlets = [
+    { name: "Billboard", url: "https://twitter.com/billboard?t=ggj0MhUcx91ooC-YbioJ1A&s=09" },
+    { name: "HuffPost", url: "https://twitter.com/HuffPost?t=TwR0NvMQrhSOkCj0QOKWBg&s=09" },
+    { name: "Newsweek", url: "https://twitter.com/Newsweek?t=tb889ae-XchitjNkEqbbVg&s=09" },
+];
 
 const TestimonialsSection: React.FC = () => {
     const prefersReduced = useReducedMotion();
@@ -94,13 +98,16 @@ const TestimonialsSection: React.FC = () => {
                         </span>
                     </div>
                     <div className="flex items-center justify-center gap-8 flex-wrap">
-                        {pressNames.map((name) => (
-                            <span
-                                key={name}
-                                className="font-serif text-2xl md:text-3xl font-bold text-stone-600"
+                        {pressOutlets.map((outlet) => (
+                            <a
+                                key={outlet.name}
+                                href={outlet.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="font-serif text-2xl md:text-3xl font-bold text-stone-600 hover:text-yellow-600 transition-colors duration-200"
                             >
-                                {name}
-                            </span>
+                                {outlet.name}
+                            </a>
                         ))}
                     </div>
                 </ScrollReveal>
