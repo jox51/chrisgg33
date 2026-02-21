@@ -1,5 +1,9 @@
 import React from "react";
+import { motion } from "framer-motion";
 import SectionHeading from "./Shared/SectionHeading";
+import StaggerChildren, { StaggerItem } from "./Motion/StaggerChildren";
+import { EASE_HOVER } from "./Motion/variants";
+import { useReducedMotion } from "./Motion/useReducedMotion";
 import {
     Shield,
     Compass,
@@ -14,10 +18,11 @@ interface Service {
     title: string;
     description: string;
     price: string;
-    aosDelay: string;
 }
 
 const FeaturesSection: React.FC = () => {
+    const prefersReduced = useReducedMotion();
+
     const services: Service[] = [
         {
             icon: Shield,
@@ -25,7 +30,6 @@ const FeaturesSection: React.FC = () => {
             description:
                 "Prepare, protect, and thrive during your enemy year. Includes a 45-minute call with Chris.",
             price: "$170",
-            aosDelay: "0",
         },
         {
             icon: Compass,
@@ -33,7 +37,6 @@ const FeaturesSection: React.FC = () => {
             description:
                 "Personal development, decision making, accountability, and pattern recognition with Chris.",
             price: "$280",
-            aosDelay: "100",
         },
         {
             icon: Clock,
@@ -41,7 +44,6 @@ const FeaturesSection: React.FC = () => {
             description:
                 "Extended session for in-depth personal guidance. Our best hourly rate available.",
             price: "$440",
-            aosDelay: "200",
         },
         {
             icon: AlertTriangle,
@@ -49,7 +51,6 @@ const FeaturesSection: React.FC = () => {
             description:
                 "Need help as soon as possible? Chris will make himself available within 28 hours of your order.",
             price: "$800",
-            aosDelay: "300",
         },
         {
             icon: Heart,
@@ -57,7 +58,6 @@ const FeaturesSection: React.FC = () => {
             description:
                 "Discover your soul mate date, the best days to take action, and which days to lay low.",
             price: "$125",
-            aosDelay: "400",
         },
         {
             icon: Users,
@@ -65,7 +65,6 @@ const FeaturesSection: React.FC = () => {
             description:
                 "30-minute astrology-based relationship insight and healing consultation with Chris.",
             price: "$152",
-            aosDelay: "500",
         },
     ];
 
@@ -78,31 +77,39 @@ const FeaturesSection: React.FC = () => {
                     subtitle="One-on-one mentorship conversations focused on practical life guidance, reflection, and application"
                 />
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <StaggerChildren
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                    stagger={0.08}
+                    delayChildren={0.1}
+                >
                     {services.map((service) => (
-                        <div
-                            key={service.title}
-                            className="border-[3px] border-stone-700 bg-stone-900 p-8 hover:border-yellow-600 cursor-default"
-                            data-aos="fade-up"
-                            data-aos-delay={service.aosDelay}
-                        >
-                            <service.icon
-                                className="text-yellow-600 mb-4"
-                                size={28}
-                                strokeWidth={2}
-                            />
-                            <h3 className="font-serif text-2xl font-bold text-stone-50 mb-3">
-                                {service.title}
-                            </h3>
-                            <p className="text-stone-400 text-sm leading-relaxed mb-4">
-                                {service.description}
-                            </p>
-                            <span className="font-serif text-xl font-bold text-yellow-600">
-                                {service.price}
-                            </span>
-                        </div>
+                        <StaggerItem key={service.title} className="h-full">
+                            <motion.div
+                                className="border-[3px] border-stone-700 bg-stone-900 p-8 cursor-default h-full flex flex-col"
+                                whileHover={prefersReduced ? undefined : {
+                                    borderColor: "#CA8A04",
+                                    y: -2,
+                                    transition: { duration: 0.2, ease: EASE_HOVER },
+                                }}
+                            >
+                                <service.icon
+                                    className="text-yellow-600 mb-4"
+                                    size={28}
+                                    strokeWidth={2}
+                                />
+                                <h3 className="font-serif text-2xl font-bold text-stone-50 mb-3">
+                                    {service.title}
+                                </h3>
+                                <p className="text-stone-400 text-sm leading-relaxed mb-4 flex-grow">
+                                    {service.description}
+                                </p>
+                                <span className="font-serif text-xl font-bold text-yellow-600">
+                                    {service.price}
+                                </span>
+                            </motion.div>
+                        </StaggerItem>
                     ))}
-                </div>
+                </StaggerChildren>
             </div>
         </section>
     );

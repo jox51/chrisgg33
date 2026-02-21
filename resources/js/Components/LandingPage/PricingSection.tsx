@@ -1,6 +1,7 @@
 import React from "react";
 import SectionHeading from "./Shared/SectionHeading";
 import PricingCard from "./Pricing/PricingCard";
+import StaggerChildren, { StaggerItem } from "./Motion/StaggerChildren";
 
 const PricingSection: React.FC = () => {
     const oppositionFeatures = [
@@ -63,69 +64,79 @@ const PricingSection: React.FC = () => {
                     Use code NEWYEAR2026 for 25% off select services
                 </p>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-                    <PricingCard
-                        planName="Oppositional Year Prep"
-                        price="$170"
-                        pricePeriod="one-time"
-                        features={oppositionFeatures}
-                        buttonText="Book Now"
-                        buttonLink="opposition"
-                        aosDelay="0"
-                    />
+                <StaggerChildren
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto"
+                    stagger={0.08}
+                    delayChildren={0.1}
+                >
+                    <StaggerItem className="h-full">
+                        <PricingCard
+                            planName="Oppositional Year Prep"
+                            price="$170"
+                            pricePeriod="one-time"
+                            features={oppositionFeatures}
+                            buttonText="Book Now"
+                            buttonLink="opposition"
+                        />
+                    </StaggerItem>
 
-                    <PricingCard
-                        planName="Strategic Guidance"
-                        price="$280"
-                        pricePeriod="one-time"
-                        features={guidanceFeatures}
-                        buttonText="Schedule Now"
-                        buttonLink="guidance"
-                        isPopular={true}
-                        popularText="Most Popular"
-                        aosDelay="100"
-                    />
+                    <StaggerItem className="h-full">
+                        <PricingCard
+                            planName="Strategic Guidance"
+                            price="$280"
+                            pricePeriod="one-time"
+                            features={guidanceFeatures}
+                            buttonText="Schedule Now"
+                            buttonLink="guidance"
+                            isPopular={true}
+                            popularText="Most Popular"
+                        />
+                    </StaggerItem>
 
-                    <PricingCard
-                        planName="2.5 Hour Session"
-                        price="$440"
-                        pricePeriod="one-time"
-                        features={twoHourFeatures}
-                        buttonText="Book 2.5 Hours"
-                        buttonLink="two-hour"
-                        aosDelay="200"
-                    />
+                    <StaggerItem className="h-full">
+                        <PricingCard
+                            planName="2.5 Hour Session"
+                            price="$440"
+                            pricePeriod="one-time"
+                            features={twoHourFeatures}
+                            buttonText="Book 2.5 Hours"
+                            buttonLink="two-hour"
+                        />
+                    </StaggerItem>
 
-                    <PricingCard
-                        planName="Emergency Services"
-                        price="$800"
-                        pricePeriod="one-time"
-                        features={emergencyFeatures}
-                        buttonText="Book Emergency"
-                        buttonLink="emergency"
-                        aosDelay="300"
-                    />
+                    <StaggerItem className="h-full">
+                        <PricingCard
+                            planName="Emergency Services"
+                            price="$800"
+                            pricePeriod="one-time"
+                            features={emergencyFeatures}
+                            buttonText="Book Emergency"
+                            buttonLink="emergency"
+                        />
+                    </StaggerItem>
 
-                    <PricingCard
-                        planName="Soul Mate & Dates"
-                        price="$125"
-                        pricePeriod="one-time"
-                        features={soulMateFeatures}
-                        buttonText="Find Your Soul Mate"
-                        buttonLink="soulmate"
-                        aosDelay="400"
-                    />
+                    <StaggerItem className="h-full">
+                        <PricingCard
+                            planName="Soul Mate & Dates"
+                            price="$125"
+                            pricePeriod="one-time"
+                            features={soulMateFeatures}
+                            buttonText="Find Your Soul Mate"
+                            buttonLink="soulmate"
+                        />
+                    </StaggerItem>
 
-                    <PricingCard
-                        planName="Relationship / Compatibility"
-                        price="$152"
-                        pricePeriod="one-time"
-                        features={relationshipFeatures}
-                        buttonText="Get Insights"
-                        buttonLink="relationship"
-                        aosDelay="500"
-                    />
-                </div>
+                    <StaggerItem className="h-full">
+                        <PricingCard
+                            planName="Relationship / Compatibility"
+                            price="$152"
+                            pricePeriod="one-time"
+                            features={relationshipFeatures}
+                            buttonText="Get Insights"
+                            buttonLink="relationship"
+                        />
+                    </StaggerItem>
+                </StaggerChildren>
             </div>
         </section>
     );

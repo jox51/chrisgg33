@@ -1,12 +1,15 @@
 import React from "react";
+import { motion } from "framer-motion";
+import { ScrollReveal } from "./Motion";
+import { ctaButtonHover, ctaButtonTap } from "./Motion/variants";
+import { useReducedMotion } from "./Motion/useReducedMotion";
 
 const FinalCTASection: React.FC = () => {
+    const prefersReduced = useReducedMotion();
+
     return (
         <section className="py-20 bg-stone-900 border-t-[3px] border-yellow-600">
-            <div
-                className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
-                data-aos="fade-up"
-            >
+            <ScrollReveal className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <span className="section-label mb-4 block">
                     [Get Started]
                 </span>
@@ -18,13 +21,15 @@ const FinalCTASection: React.FC = () => {
                     application — informed by Chris's experience and study of
                     historical, cultural, and symbolic frameworks.
                 </p>
-                <a
+                <motion.a
                     href="#pricing"
                     className="inline-block bg-yellow-600 text-stone-950 px-12 py-4 font-bold font-mono text-sm uppercase tracking-widest hover:bg-yellow-500 cursor-pointer"
+                    whileHover={prefersReduced ? undefined : ctaButtonHover}
+                    whileTap={prefersReduced ? undefined : ctaButtonTap}
                 >
                     Book Your Session
-                </a>
-            </div>
+                </motion.a>
+            </ScrollReveal>
         </section>
     );
 };

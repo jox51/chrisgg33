@@ -9,7 +9,6 @@ interface FeatureCardProps {
     borderColor: string;
     hoverBorderColor: string;
     titleColor: string;
-    aosDelay?: string;
 }
 
 const FeatureCard: React.FC<FeatureCardProps> = ({
@@ -21,13 +20,10 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
     borderColor,
     hoverBorderColor,
     titleColor,
-    aosDelay = ''
 }) => {
     return (
-        <div 
+        <div
             className={`bg-gradient-to-br ${gradientFrom} ${gradientTo} rounded-2xl p-8 border ${borderColor} ${hoverBorderColor} transition-all duration-300 transform hover:scale-105`}
-            data-aos="fade-up"
-            data-aos-delay={aosDelay}
         >
             <div className="text-4xl mb-4">{icon}</div>
             <h3 className={`text-2xl font-bold mb-4 ${titleColor}`}>

@@ -9,7 +9,6 @@ interface HowItWorksStepItemProps {
     gradientTo: string;
     titleColor: string;
     iconBgColor: string;
-    aosDelay?: string;
 }
 
 const HowItWorksStepItem: React.FC<HowItWorksStepItemProps> = ({
@@ -21,14 +20,9 @@ const HowItWorksStepItem: React.FC<HowItWorksStepItemProps> = ({
     gradientTo,
     titleColor,
     iconBgColor,
-    aosDelay = "",
 }) => {
     return (
-        <div 
-            className="text-center" 
-            data-aos="fade-up" 
-            data-aos-delay={aosDelay}
-        >
+        <div className="text-center">
             <div className="relative mb-8">
                 <div className={`w-32 h-32 bg-gradient-to-br ${gradientFrom} ${gradientTo} rounded-full flex items-center justify-center mx-auto mb-6 glow`}>
                     <span className="text-4xl font-black text-white">{stepNumber}</span>

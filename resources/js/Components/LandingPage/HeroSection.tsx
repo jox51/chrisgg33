@@ -1,5 +1,16 @@
 import React from "react";
+import { motion } from "framer-motion";
 import { Award, Users, Star, Newspaper } from "lucide-react";
+import {
+    fadeUp,
+    fadeUpReduced,
+    createStaggerContainer,
+    ctaButtonHover,
+    ctaButtonTap,
+    STAGGER_SLOW,
+    EASE_HOVER,
+} from "./Motion/variants";
+import { useReducedMotion } from "./Motion/useReducedMotion";
 
 interface HeroSectionProps {
     isSubscribed?: boolean;
@@ -29,6 +40,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({
     isSubscribed = false,
     isAuthenticated = false,
 }) => {
+    const prefersReduced = useReducedMotion();
+
     const ctaHref = isSubscribed
         ? "/app"
         : "#pricing";
@@ -37,43 +50,55 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         ? "Go to Dashboard"
         : "Book Now";
 
+    const variants = prefersReduced ? fadeUpReduced : fadeUp;
+    const container = prefersReduced
+        ? { hidden: {}, visible: {} }
+        : createStaggerContainer(STAGGER_SLOW, 0.2);
+
     return (
         <section className="min-h-screen bg-stone-950 flex items-center justify-center relative pt-24 pb-16">
-            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <span
+            <motion.div
+                className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
+                initial="hidden"
+                animate="visible"
+                variants={container}
+            >
+                <motion.span
                     className="section-label mb-6 block"
-                    data-aos="fade-up"
+                    variants={variants}
                 >
                     [Chris GG33]
-                </span>
+                </motion.span>
 
-                <h1
+                <motion.h1
                     className="font-serif text-5xl md:text-7xl lg:text-8xl font-bold text-stone-50 mb-6 leading-[1.05]"
-                    data-aos="fade-up"
-                    data-aos-delay="100"
+                    variants={variants}
                 >
                     Get Strategic<br />
                     Guidance With{" "}
                     <span className="text-yellow-600">Chris</span>
-                </h1>
+                </motion.h1>
 
-                <p
+                <motion.p
                     className="text-stone-400 text-lg md:text-xl font-sans mb-12 max-w-2xl mx-auto"
-                    data-aos="fade-up"
-                    data-aos-delay="200"
+                    variants={variants}
                 >
                     I Am Your Favorite Influencer&rsquo;s Influencer
-                </p>
+                </motion.p>
 
-                <div
+                <motion.div
                     className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-14 max-w-4xl mx-auto"
-                    data-aos="fade-up"
-                    data-aos-delay="300"
+                    variants={variants}
                 >
                     {credentials.map((cred) => (
-                        <div
+                        <motion.div
                             key={cred.text}
-                            className="border-[3px] border-stone-700 p-4 bg-stone-900 hover:border-yellow-600 cursor-default"
+                            className="border-[3px] border-stone-700 p-4 bg-stone-900 cursor-default"
+                            whileHover={prefersReduced ? undefined : {
+                                borderColor: "#CA8A04",
+                                y: -2,
+                                transition: { duration: 0.2, ease: EASE_HOVER },
+                            }}
                         >
                             <cred.icon
                                 className="text-yellow-600 mx-auto mb-2"
@@ -83,19 +108,21 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                             <span className="font-mono text-xs uppercase tracking-wider text-stone-300 block">
                                 {cred.text}
                             </span>
-                        </div>
+                        </motion.div>
                     ))}
-                </div>
+                </motion.div>
 
-                <div data-aos="fade-up" data-aos-delay="400">
-                    <a
+                <motion.div variants={variants}>
+                    <motion.a
                         href={ctaHref}
                         className="inline-block bg-yellow-600 text-stone-950 px-10 py-4 font-bold font-mono text-sm uppercase tracking-widest hover:bg-yellow-500 cursor-pointer"
+                        whileHover={prefersReduced ? undefined : ctaButtonHover}
+                        whileTap={prefersReduced ? undefined : ctaButtonTap}
                     >
                         {ctaText}
-                    </a>
-                </div>
-            </div>
+                    </motion.a>
+                </motion.div>
+            </motion.div>
         </section>
     );
 };

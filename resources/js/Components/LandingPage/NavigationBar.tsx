@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { PageProps } from "@/types";
 import { usePage, Link } from "@inertiajs/react";
 import { Menu, X } from "lucide-react";
 import Logo from "../../../images/logo.png";
+import { mobileMenuSlide, ctaButtonHover, ctaButtonTap, EASE_HOVER } from "./Motion/variants";
+import { useReducedMotion } from "./Motion/useReducedMotion";
 
 interface NavigationBarProps {
     auth?: PageProps["auth"];
@@ -17,6 +20,18 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
 }) => {
     const { blog_base_path } = usePage<PageProps>().props;
     const [mobileOpen, setMobileOpen] = useState(false);
+    const [navHidden, setNavHidden] = useState(false);
+    const prefersReduced = useReducedMotion();
+    const { scrollY } = useScroll();
+
+    useMotionValueEvent(scrollY, "change", (latest) => {
+        const previous = scrollY.getPrevious() ?? 0;
+        if (latest > previous && latest > 100) {
+            setNavHidden(true);
+        } else {
+            setNavHidden(false);
+        }
+    });
 
     const navLinks = [
         { href: "/#services", label: "Services" },
@@ -27,7 +42,9 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
     ];
 
     return (
-        <nav
+        <motion.nav
+            animate={{ y: navHidden ? "-100%" : "0%" }}
+            transition={prefersReduced ? { duration: 0 } : { duration: 0.3, ease: EASE_HOVER }}
             className={`fixed top-0 w-full z-50 bg-stone-950 border-b-[3px] border-stone-700 ${className}`}
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -87,12 +104,14 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
                                 </Link>
                             </div>
                         ) : (
-                            <a
+                            <motion.a
                                 href="/#pricing"
                                 className="hidden md:block bg-yellow-600 text-stone-950 px-6 py-2 font-bold font-mono text-sm uppercase tracking-wider hover:bg-yellow-500 cursor-pointer"
+                                whileHover={prefersReduced ? undefined : ctaButtonHover}
+                                whileTap={prefersReduced ? undefined : ctaButtonTap}
                             >
                                 Book Now
-                            </a>
+                            </motion.a>
                         )}
 
                         <button
@@ -106,59 +125,68 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
                 </div>
             </div>
 
-            {mobileOpen && (
-                <div className="md:hidden bg-stone-950 border-t-[2px] border-stone-700">
-                    <div className="px-4 py-4 space-y-3">
-                        {navLinks.map((link) =>
-                            link.isLink ? (
-                                <Link
-                                    key={link.label}
-                                    href={link.href}
-                                    className="block text-stone-400 hover:text-yellow-600 font-mono text-sm uppercase tracking-wider py-2"
-                                    onClick={() => setMobileOpen(false)}
-                                >
-                                    {link.label}
-                                </Link>
+            <AnimatePresence>
+                {mobileOpen && (
+                    <motion.div
+                        key="mobile-menu"
+                        variants={prefersReduced ? undefined : mobileMenuSlide}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        className="md:hidden bg-stone-950 border-t-[2px] border-stone-700 overflow-hidden"
+                    >
+                        <div className="px-4 py-4 space-y-3">
+                            {navLinks.map((link) =>
+                                link.isLink ? (
+                                    <Link
+                                        key={link.label}
+                                        href={link.href}
+                                        className="block text-stone-400 hover:text-yellow-600 font-mono text-sm uppercase tracking-wider py-2"
+                                        onClick={() => setMobileOpen(false)}
+                                    >
+                                        {link.label}
+                                    </Link>
+                                ) : (
+                                    <a
+                                        key={link.label}
+                                        href={link.href}
+                                        className="block text-stone-400 hover:text-yellow-600 font-mono text-sm uppercase tracking-wider py-2"
+                                        onClick={() => setMobileOpen(false)}
+                                    >
+                                        {link.label}
+                                    </a>
+                                )
+                            )}
+                            {auth?.user ? (
+                                <>
+                                    <a
+                                        href="/dashboard"
+                                        className="block text-stone-400 hover:text-yellow-600 font-mono text-sm uppercase tracking-wider py-2"
+                                    >
+                                        Dashboard
+                                    </a>
+                                    <Link
+                                        href={route("logout")}
+                                        method="post"
+                                        className="block border-[2px] border-stone-700 bg-stone-900 px-4 py-2 text-stone-300 font-mono text-sm uppercase tracking-wider text-center hover:border-yellow-600 cursor-pointer"
+                                    >
+                                        Logout
+                                    </Link>
+                                </>
                             ) : (
                                 <a
-                                    key={link.label}
-                                    href={link.href}
-                                    className="block text-stone-400 hover:text-yellow-600 font-mono text-sm uppercase tracking-wider py-2"
+                                    href="/#pricing"
+                                    className="block bg-yellow-600 text-stone-950 px-4 py-2 font-bold font-mono text-sm uppercase tracking-wider text-center hover:bg-yellow-500 cursor-pointer"
                                     onClick={() => setMobileOpen(false)}
                                 >
-                                    {link.label}
+                                    Book Now
                                 </a>
-                            )
-                        )}
-                        {auth?.user ? (
-                            <>
-                                <a
-                                    href="/dashboard"
-                                    className="block text-stone-400 hover:text-yellow-600 font-mono text-sm uppercase tracking-wider py-2"
-                                >
-                                    Dashboard
-                                </a>
-                                <Link
-                                    href={route("logout")}
-                                    method="post"
-                                    className="block border-[2px] border-stone-700 bg-stone-900 px-4 py-2 text-stone-300 font-mono text-sm uppercase tracking-wider text-center hover:border-yellow-600 cursor-pointer"
-                                >
-                                    Logout
-                                </Link>
-                            </>
-                        ) : (
-                            <a
-                                href="/#pricing"
-                                className="block bg-yellow-600 text-stone-950 px-4 py-2 font-bold font-mono text-sm uppercase tracking-wider text-center hover:bg-yellow-500 cursor-pointer"
-                                onClick={() => setMobileOpen(false)}
-                            >
-                                Book Now
-                            </a>
-                        )}
-                    </div>
-                </div>
-            )}
-        </nav>
+                            )}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </motion.nav>
     );
 };
 

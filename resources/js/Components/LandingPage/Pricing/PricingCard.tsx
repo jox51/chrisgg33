@@ -1,6 +1,9 @@
 import React from "react";
+import { motion } from "framer-motion";
 import PlanFeatureListItem from "./PlanFeatureListItem";
 import { trackButtonClick } from "../../../utils/gtmUtils";
+import { ctaButtonHover, ctaButtonTap, EASE_HOVER } from "../Motion/variants";
+import { useReducedMotion } from "../Motion/useReducedMotion";
 
 interface PricingCardProps {
     planName: string;
@@ -11,7 +14,6 @@ interface PricingCardProps {
     buttonLink: string;
     isPopular?: boolean;
     popularText?: string;
-    aosDelay?: string;
 }
 
 const PricingCard: React.FC<PricingCardProps> = ({
@@ -23,19 +25,22 @@ const PricingCard: React.FC<PricingCardProps> = ({
     buttonLink,
     isPopular = false,
     popularText = "Most Popular",
-    aosDelay = "",
 }) => {
+    const prefersReduced = useReducedMotion();
     const actualButtonLink = `/subscribe/whop/${buttonLink}`;
 
     return (
-        <div
-            className={`border-[3px] p-8 relative ${
+        <motion.div
+            className={`border-[3px] p-8 relative h-full flex flex-col ${
                 isPopular
                     ? "border-yellow-600 bg-stone-900"
-                    : "border-stone-700 bg-stone-900 hover:border-stone-600"
+                    : "border-stone-700 bg-stone-900"
             }`}
-            data-aos="fade-up"
-            data-aos-delay={aosDelay}
+            whileHover={prefersReduced ? undefined : {
+                borderColor: isPopular ? undefined : "#78716C",
+                y: -2,
+                transition: { duration: 0.2, ease: EASE_HOVER },
+            }}
         >
             {isPopular && (
                 <div className="absolute top-0 right-0 bg-yellow-600 text-stone-950 px-3 py-1 font-mono text-xs uppercase tracking-wider font-bold">
@@ -57,19 +62,21 @@ const PricingCard: React.FC<PricingCardProps> = ({
                 </span>
             </div>
 
-            <ul className="space-y-3 mb-8">
+            <ul className="space-y-3 mb-8 flex-grow">
                 {features.map((feature, index) => (
                     <PlanFeatureListItem key={index} featureText={feature} />
                 ))}
             </ul>
 
-            <a
+            <motion.a
                 href={actualButtonLink}
                 className={`block w-full py-3 text-center font-bold font-mono text-sm uppercase tracking-wider cursor-pointer ${
                     isPopular
                         ? "bg-yellow-600 text-stone-950 hover:bg-yellow-500"
                         : "border-[2px] border-stone-600 text-stone-300 hover:border-yellow-600 hover:text-yellow-600"
                 }`}
+                whileHover={prefersReduced ? undefined : ctaButtonHover}
+                whileTap={prefersReduced ? undefined : ctaButtonTap}
                 onClick={() => {
                     trackButtonClick(
                         `select_plan_${planName
@@ -84,8 +91,8 @@ const PricingCard: React.FC<PricingCardProps> = ({
                 }}
             >
                 {buttonText}
-            </a>
-        </div>
+            </motion.a>
+        </motion.div>
     );
 };
 

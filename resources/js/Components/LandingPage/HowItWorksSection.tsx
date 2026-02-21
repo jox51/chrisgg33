@@ -1,5 +1,10 @@
 import React from "react";
+import { motion } from "framer-motion";
 import SectionHeading from "./Shared/SectionHeading";
+import { ScrollReveal } from "./Motion";
+import StaggerChildren, { StaggerItem } from "./Motion/StaggerChildren";
+import { ctaButtonHover, ctaButtonTap, EASE_HOVER } from "./Motion/variants";
+import { useReducedMotion } from "./Motion/useReducedMotion";
 import {
     Swords,
     Search,
@@ -51,64 +56,72 @@ const benefits = [
 const ratYears = [1960, 1972, 1984, 1996, 2008, 2020];
 
 const HowItWorksSection: React.FC = () => {
+    const prefersReduced = useReducedMotion();
+
     return (
         <section id="opposition" className="py-20 bg-stone-900">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 <SectionHeading
-                    label="Year of the Horse \u2014 2026"
+                    label="Year of the Horse — 2026"
                     title="Oppositional Year Consultation"
-                    subtitle="2026 brings the Year of the Horse \u2014 the direct opposition of those born in the Year of the Rat. In Chinese astrology, this marks an Enemy Year: a cycle when challenges, conflicts, and hidden rivals often come to the surface."
+                    subtitle="2026 brings the Year of the Horse — the direct opposition of those born in the Year of the Rat. In Chinese astrology, this marks an Enemy Year: a cycle when challenges, conflicts, and hidden rivals often come to the surface."
                 />
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
-                    {benefits.map((benefit, index) => (
-                        <div
-                            key={benefit.title}
-                            className="flex items-start gap-4 p-5 border-[2px] border-stone-700 bg-stone-950 hover:border-yellow-600"
-                            data-aos="fade-up"
-                            data-aos-delay={String(index * 80)}
-                        >
-                            <benefit.icon
-                                className="text-yellow-600 flex-shrink-0 mt-1"
-                                size={22}
-                                strokeWidth={2}
-                            />
-                            <div>
-                                <h4 className="font-serif text-lg font-bold text-stone-50 mb-1">
-                                    {benefit.title}
-                                </h4>
-                                <p className="text-stone-400 text-sm leading-relaxed">
-                                    {benefit.description}
-                                </p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-
-                <div
-                    className="brutalist-border-gold p-6 text-center mb-8"
-                    data-aos="fade-up"
+                <StaggerChildren
+                    className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12"
+                    stagger={0.07}
+                    delayChildren={0.1}
                 >
+                    {benefits.map((benefit) => (
+                        <StaggerItem key={benefit.title}>
+                            <motion.div
+                                className="flex items-start gap-4 p-5 border-[2px] border-stone-700 bg-stone-950"
+                                whileHover={prefersReduced ? undefined : {
+                                    borderColor: "#CA8A04",
+                                    transition: { duration: 0.2, ease: EASE_HOVER },
+                                }}
+                            >
+                                <benefit.icon
+                                    className="text-yellow-600 flex-shrink-0 mt-1"
+                                    size={22}
+                                    strokeWidth={2}
+                                />
+                                <div>
+                                    <h4 className="font-serif text-lg font-bold text-stone-50 mb-1">
+                                        {benefit.title}
+                                    </h4>
+                                    <p className="text-stone-400 text-sm leading-relaxed">
+                                        {benefit.description}
+                                    </p>
+                                </div>
+                            </motion.div>
+                        </StaggerItem>
+                    ))}
+                </StaggerChildren>
+
+                <ScrollReveal className="brutalist-border-gold p-6 text-center mb-8">
                     <p className="font-mono text-xs uppercase tracking-wider text-yellow-600 mb-2">
                         For Those Born in Rat Years
                     </p>
                     <p className="font-serif text-lg text-stone-300">
-                        {ratYears.join(" \u00b7 ")}
+                        {ratYears.join(" · ")}
                     </p>
-                </div>
+                </ScrollReveal>
 
-                <div className="text-center" data-aos="fade-up">
-                    <a
+                <ScrollReveal className="text-center">
+                    <motion.a
                         href="/subscribe/whop/opposition"
                         className="inline-block bg-yellow-600 text-stone-950 px-10 py-4 font-bold font-mono text-sm uppercase tracking-widest hover:bg-yellow-500 cursor-pointer mb-4"
+                        whileHover={prefersReduced ? undefined : ctaButtonHover}
+                        whileTap={prefersReduced ? undefined : ctaButtonTap}
                     >
                         Prepare Now &mdash; $170
-                    </a>
+                    </motion.a>
                     <p className="text-stone-500 text-xs font-mono max-w-lg mx-auto">
                         Not year of the rat? Feel free to schedule &mdash; next enemy sign up
                         will be the Year of the Ox in 2027.
                     </p>
-                </div>
+                </ScrollReveal>
             </div>
         </section>
     );

@@ -1,5 +1,9 @@
 import React, { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import SectionHeading from "./Shared/SectionHeading";
+import StaggerChildren, { StaggerItem } from "./Motion/StaggerChildren";
+import { accordionContent } from "./Motion/variants";
+import { useReducedMotion } from "./Motion/useReducedMotion";
 
 interface FAQItem {
     question: string;
@@ -8,6 +12,7 @@ interface FAQItem {
 
 const FAQSection: React.FC = () => {
     const [openFAQ, setOpenFAQ] = useState<number | null>(null);
+    const prefersReduced = useReducedMotion();
 
     const faqs: FAQItem[] = [
         {
@@ -53,44 +58,50 @@ const FAQSection: React.FC = () => {
                     subtitle="Everything you need to know about Chris's services"
                 />
 
-                <div className="space-y-3">
+                <StaggerChildren className="space-y-3" stagger={0.06}>
                     {faqs.map((faq, index) => (
-                        <div
-                            key={index}
-                            className="border-[2px] border-stone-700 bg-stone-900 overflow-hidden hover:border-stone-600"
-                            data-aos="fade-up"
-                            data-aos-delay={`${index * 60}`}
-                        >
-                            <button
-                                onClick={() => toggleFAQ(index)}
-                                className="w-full px-6 py-5 text-left flex items-center justify-between cursor-pointer"
-                                aria-expanded={openFAQ === index}
-                            >
-                                <h3 className="font-serif text-lg font-bold text-stone-50 pr-4">
-                                    {faq.question}
-                                </h3>
-                                <span className="font-mono text-xl text-yellow-600 flex-shrink-0 leading-none">
-                                    {openFAQ === index ? "\u2212" : "+"}
-                                </span>
-                            </button>
+                        <StaggerItem key={index}>
+                            <div className="border-[2px] border-stone-700 bg-stone-900 overflow-hidden hover:border-stone-600">
+                                <button
+                                    onClick={() => toggleFAQ(index)}
+                                    className="w-full px-6 py-5 text-left flex items-center justify-between cursor-pointer"
+                                    aria-expanded={openFAQ === index}
+                                >
+                                    <h3 className="font-serif text-lg font-bold text-stone-50 pr-4">
+                                        {faq.question}
+                                    </h3>
+                                    <motion.span
+                                        className="font-mono text-xl text-yellow-600 flex-shrink-0 leading-none"
+                                        animate={{ rotate: openFAQ === index ? 45 : 0 }}
+                                        transition={{ duration: 0.2 }}
+                                    >
+                                        +
+                                    </motion.span>
+                                </button>
 
-                            <div
-                                className={`overflow-hidden transition-all duration-200 ease-in-out ${
-                                    openFAQ === index
-                                        ? "max-h-96 opacity-100"
-                                        : "max-h-0 opacity-0"
-                                }`}
-                            >
-                                <div className="px-6 pb-5">
-                                    <div className="h-px bg-stone-700 mb-4"></div>
-                                    <p className="text-stone-400 text-sm leading-relaxed">
-                                        {faq.answer}
-                                    </p>
-                                </div>
+                                <AnimatePresence initial={false}>
+                                    {openFAQ === index && (
+                                        <motion.div
+                                            key="faq-content"
+                                            variants={prefersReduced ? undefined : accordionContent}
+                                            initial="collapsed"
+                                            animate="expanded"
+                                            exit="collapsed"
+                                            style={{ overflow: "hidden" }}
+                                        >
+                                            <div className="px-6 pb-5">
+                                                <div className="h-px bg-stone-700 mb-4"></div>
+                                                <p className="text-stone-400 text-sm leading-relaxed">
+                                                    {faq.answer}
+                                                </p>
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
                             </div>
-                        </div>
+                        </StaggerItem>
                     ))}
-                </div>
+                </StaggerChildren>
             </div>
         </section>
     );

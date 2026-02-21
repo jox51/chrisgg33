@@ -1,20 +1,4 @@
-// arbscreener/resources/js/utils/landingPageUtils.ts
-import AOS from "aos"; // We'll address AOS import/setup below
-import "aos/dist/aos.css"; // Import AOS styles
-
-export const initAOS = () => {
-    if (typeof window === 'undefined') {
-        console.log('AOS initialization skipped on server-side');
-        return;
-    }
-    
-    AOS.init({
-        duration: 800,
-        easing: "ease-in-out",
-        once: true,
-        offset: 100,
-    });
-};
+// resources/js/utils/landingPageUtils.ts
 
 export const initSmoothScroll = () => {
     if (typeof window === 'undefined' || typeof document === 'undefined') {
@@ -39,24 +23,6 @@ export const initSmoothScroll = () => {
                 }
             }
         );
-    });
-};
-
-export const initNavbarScrollBehavior = (navElement: HTMLElement | null) => {
-    if (typeof window === 'undefined') {
-        console.log('Navbar scroll behavior initialization skipped on server-side');
-        return;
-    }
-    
-    if (!navElement) return;
-    let lastScrollY = window.scrollY;
-    window.addEventListener("scroll", () => {
-        if (window.scrollY > lastScrollY && window.scrollY > 100) {
-            navElement.style.transform = "translateY(-100%)";
-        } else {
-            navElement.style.transform = "translateY(0)";
-        }
-        lastScrollY = window.scrollY;
     });
 };
 

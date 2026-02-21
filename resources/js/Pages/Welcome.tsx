@@ -10,10 +10,7 @@ import PricingSection from "@/Components/LandingPage/PricingSection";
 import TestimonialsSection from "@/Components/LandingPage/TestimonialsSection";
 import FAQSection from "@/Components/LandingPage/FAQSection";
 import FinalCTASection from "@/Components/LandingPage/FinalCTASection";
-import {
-    initAOS,
-    initSmoothScroll,
-} from "@/utils/landingPageUtils";
+import { initSmoothScroll } from "@/utils/landingPageUtils";
 import { initializeGTM } from "@/utils/gtmUtils";
 
 export default function Welcome({
@@ -29,7 +26,6 @@ export default function Welcome({
     appName: string;
 }>) {
     useEffect(() => {
-        initAOS();
         initSmoothScroll();
 
         initializeGTM(gtmId, {

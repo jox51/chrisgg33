@@ -1,4 +1,5 @@
 import React from 'react';
+import { ScrollReveal } from '../Motion';
 
 interface SectionHeadingProps {
     title: string | React.ReactNode;
@@ -7,7 +8,6 @@ interface SectionHeadingProps {
     className?: string;
     titleClassName?: string;
     subtitleClassName?: string;
-    aosDelay?: string;
 }
 
 const SectionHeading: React.FC<SectionHeadingProps> = ({
@@ -17,14 +17,9 @@ const SectionHeading: React.FC<SectionHeadingProps> = ({
     className = '',
     titleClassName = '',
     subtitleClassName = '',
-    aosDelay = ''
 }) => {
     return (
-        <div
-            className={`text-center mb-16 ${className}`}
-            data-aos="fade-up"
-            data-aos-delay={aosDelay}
-        >
+        <ScrollReveal className={`text-center mb-16 ${className}`}>
             {label && (
                 <span className="section-label mb-4 block">
                     [{label}]
@@ -38,7 +33,7 @@ const SectionHeading: React.FC<SectionHeadingProps> = ({
                     {subtitle}
                 </p>
             )}
-        </div>
+        </ScrollReveal>
     );
 };
 

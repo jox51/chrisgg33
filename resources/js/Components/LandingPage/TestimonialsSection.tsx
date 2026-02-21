@@ -1,5 +1,10 @@
 import React from "react";
+import { motion } from "framer-motion";
 import SectionHeading from "./Shared/SectionHeading";
+import { ScrollReveal } from "./Motion";
+import StaggerChildren, { StaggerItem } from "./Motion/StaggerChildren";
+import { EASE_HOVER } from "./Motion/variants";
+import { useReducedMotion } from "./Motion/useReducedMotion";
 import {
     Globe,
     TrendingUp,
@@ -46,6 +51,8 @@ const credentials: Credential[] = [
 const pressNames = ["Billboard", "HuffPost", "Newsweek"];
 
 const TestimonialsSection: React.FC = () => {
+    const prefersReduced = useReducedMotion();
+
     return (
         <section id="credentials" className="py-20 bg-stone-900">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -55,30 +62,35 @@ const TestimonialsSection: React.FC = () => {
                     subtitle="Trusted by thousands worldwide for strategic guidance through astrology and esoteric knowledge"
                 />
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
-                    {credentials.map((cred, index) => (
-                        <div
-                            key={cred.text}
-                            className="border-[3px] border-stone-700 bg-stone-950 p-6 hover:border-yellow-600 text-center cursor-default"
-                            data-aos="fade-up"
-                            data-aos-delay={String(index * 80)}
-                        >
-                            <cred.icon
-                                className="text-yellow-600 mx-auto mb-3"
-                                size={28}
-                                strokeWidth={2}
-                            />
-                            <p className="font-serif text-xl font-bold text-stone-50">
-                                {cred.text}
-                            </p>
-                        </div>
-                    ))}
-                </div>
-
-                <div
-                    className="border-t-[3px] border-stone-700 pt-8 text-center"
-                    data-aos="fade-up"
+                <StaggerChildren
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12"
+                    stagger={0.07}
+                    delayChildren={0.1}
                 >
+                    {credentials.map((cred) => (
+                        <StaggerItem key={cred.text}>
+                            <motion.div
+                                className="border-[3px] border-stone-700 bg-stone-950 p-6 text-center cursor-default"
+                                whileHover={prefersReduced ? undefined : {
+                                    borderColor: "#CA8A04",
+                                    y: -2,
+                                    transition: { duration: 0.2, ease: EASE_HOVER },
+                                }}
+                            >
+                                <cred.icon
+                                    className="text-yellow-600 mx-auto mb-3"
+                                    size={28}
+                                    strokeWidth={2}
+                                />
+                                <p className="font-serif text-xl font-bold text-stone-50">
+                                    {cred.text}
+                                </p>
+                            </motion.div>
+                        </StaggerItem>
+                    ))}
+                </StaggerChildren>
+
+                <ScrollReveal className="border-t-[3px] border-stone-700 pt-8 text-center">
                     <div className="flex items-center justify-center gap-2 mb-4">
                         <Newspaper className="text-yellow-600" size={20} strokeWidth={2} />
                         <span className="font-mono text-xs uppercase tracking-wider text-stone-400">
@@ -95,7 +107,7 @@ const TestimonialsSection: React.FC = () => {
                             </span>
                         ))}
                     </div>
-                </div>
+                </ScrollReveal>
             </div>
         </section>
     );
