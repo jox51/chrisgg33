@@ -19,10 +19,25 @@ export default {
                     accent: 'var(--blog-color-accent)',
                     neutral: 'var(--blog-color-neutral)',
                     base: 'var(--blog-color-base)',
-                }
+                },
+                brand: {
+                    dark: '#0C0A09',
+                    surface: '#1C1917',
+                    elevated: '#292524',
+                    border: '#44403C',
+                    cream: '#FAFAF9',
+                    muted: '#A8A29E',
+                    gold: '#CA8A04',
+                    'gold-light': '#FDE68A',
+                },
             },
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Montserrat', ...defaultTheme.fontFamily.sans],
+                serif: ['Cormorant', 'serif'],
+                mono: ['Space Mono', 'monospace'],
+            },
+            borderRadius: {
+                none: '0px',
             },
         },
     },

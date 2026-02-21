@@ -12,16 +12,6 @@ interface PricingCardProps {
     isPopular?: boolean;
     popularText?: string;
     aosDelay?: string;
-    borderColor?: string;
-    hoverBorderColor?: string;
-    gradientFrom?: string;
-    gradientTo?: string;
-    priceColor: string;
-    buttonGradientFrom: string;
-    buttonGradientTo: string;
-    buttonHoverGradientFrom: string;
-    buttonHoverGradientTo: string;
-    hasProfitGlow?: boolean;
 }
 
 const PricingCard: React.FC<PricingCardProps> = ({
@@ -34,53 +24,40 @@ const PricingCard: React.FC<PricingCardProps> = ({
     isPopular = false,
     popularText = "Most Popular",
     aosDelay = "",
-    borderColor = "border-gray-700",
-    hoverBorderColor = "hover:border-blue-500/50",
-    gradientFrom,
-    gradientTo,
-    priceColor,
-    buttonGradientFrom,
-    buttonGradientTo,
-    buttonHoverGradientFrom,
-    buttonHoverGradientTo,
-    hasProfitGlow = false,
 }) => {
-    const cardClasses =
-        isPopular && gradientFrom && gradientTo
-            ? `bg-gradient-to-br ${gradientFrom} ${gradientTo} rounded-2xl p-8 border-2 border-purple-500 relative overflow-hidden`
-            : `bg-gray-800 rounded-2xl p-8 border ${borderColor} ${hoverBorderColor} transition-all duration-300`;
-
-    const buttonClasses = `w-full bg-gradient-to-r ${buttonGradientFrom} ${buttonGradientTo} hover:${buttonHoverGradientFrom} hover:${buttonHoverGradientTo} py-3 rounded-xl text-white font-semibold text-center block transition-all duration-300 transform hover:scale-105${
-        hasProfitGlow ? " profit-glow" : ""
-    }`;
-
     const actualButtonLink = `/subscribe/whop/${buttonLink}`;
 
     return (
         <div
-            className={cardClasses}
+            className={`border-[3px] p-8 relative ${
+                isPopular
+                    ? "border-yellow-600 bg-stone-900"
+                    : "border-stone-700 bg-stone-900 hover:border-stone-600"
+            }`}
             data-aos="fade-up"
             data-aos-delay={aosDelay}
         >
             {isPopular && (
-                <div className="absolute top-4 right-4 bg-gradient-to-r from-yellow-500 to-orange-500 text-black px-3 py-1 rounded-full text-sm font-bold">
+                <div className="absolute top-0 right-0 bg-yellow-600 text-stone-950 px-3 py-1 font-mono text-xs uppercase tracking-wider font-bold">
                     {popularText}
                 </div>
             )}
 
             <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold text-white mb-4">
+                <h3 className="font-serif text-2xl font-bold text-stone-50 mb-4">
                     {planName}
                 </h3>
-                <div className="mb-6">
-                    <span className={`text-5xl font-black ${priceColor}`}>
+                <div className="mb-2">
+                    <span className="font-serif text-5xl font-bold text-yellow-600">
                         {price}
                     </span>
-                    <span className="text-gray-400 ml-2">{pricePeriod}</span>
                 </div>
+                <span className="text-stone-500 font-mono text-xs uppercase tracking-wider">
+                    {pricePeriod}
+                </span>
             </div>
 
-            <ul className="space-y-4 mb-8">
+            <ul className="space-y-3 mb-8">
                 {features.map((feature, index) => (
                     <PlanFeatureListItem key={index} featureText={feature} />
                 ))}
@@ -88,13 +65,22 @@ const PricingCard: React.FC<PricingCardProps> = ({
 
             <a
                 href={actualButtonLink}
-                className={buttonClasses}
+                className={`block w-full py-3 text-center font-bold font-mono text-sm uppercase tracking-wider cursor-pointer ${
+                    isPopular
+                        ? "bg-yellow-600 text-stone-950 hover:bg-yellow-500"
+                        : "border-[2px] border-stone-600 text-stone-300 hover:border-yellow-600 hover:text-yellow-600"
+                }`}
                 onClick={() => {
-                    trackButtonClick(`select_plan_${planName.toLowerCase().replace(/\s+/g, '_')}`, {
-                        button_location: "pricing",
-                        plan_name: planName,
-                        plan_price: price,
-                    });
+                    trackButtonClick(
+                        `select_plan_${planName
+                            .toLowerCase()
+                            .replace(/\s+/g, "_")}`,
+                        {
+                            button_location: "pricing",
+                            plan_name: planName,
+                            plan_price: price,
+                        }
+                    );
                 }}
             >
                 {buttonText}

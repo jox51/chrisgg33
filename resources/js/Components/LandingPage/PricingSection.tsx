@@ -9,7 +9,7 @@ const PricingSection: React.FC = () => {
         "Timing & Month-by-Month Guidance",
         "Protective Remedies & Strategies",
         "Turn Opposition into Teachers",
-        "45 Minute Call With VK",
+        "45 Minute Call With Chris",
     ];
 
     const guidanceFeatures = [
@@ -31,20 +31,39 @@ const PricingSection: React.FC = () => {
         "Available Within 28 Hours",
         "Priority Scheduling",
         "Immediate Expert Assistance",
-        "Direct Access to VK",
+        "Direct Access to Chris",
+    ];
+
+    const soulMateFeatures = [
+        "Your Soul Mate Date Revealed",
+        "Beneficial Action Days",
+        "Challenging Days to Lay Low",
+        "Personalized to Your Birthday",
+    ];
+
+    const relationshipFeatures = [
+        "Personalized Compatibility Analysis",
+        "Recurring Pattern Insights",
+        "Timing Advice for Breakthroughs",
+        "Remedies & Practical Tools",
+        "Follow-up Support & Guidance",
+        "30 Minute Call With Chris",
     ];
 
     return (
-        <section id="pricing" className="py-20 bg-gray-900">
+        <section id="pricing" className="py-20 bg-stone-950">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <SectionHeading
-                    title="Book Your Session With VK"
+                    label="Pricing"
+                    title="Book Your Session With Chris"
                     subtitle="Choose the service that fits your needs"
-                    titleClassName="text-white"
-                    subtitleClassName="text-gray-400"
                 />
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+                <p className="text-center font-mono text-xs uppercase tracking-wider text-yellow-600 mb-10 -mt-8">
+                    Use code NEWYEAR2026 for 25% off select services
+                </p>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
                     <PricingCard
                         planName="Oppositional Year Prep"
                         price="$170"
@@ -52,12 +71,7 @@ const PricingSection: React.FC = () => {
                         features={oppositionFeatures}
                         buttonText="Book Now"
                         buttonLink="opposition"
-                        aosDelay="100"
-                        priceColor="text-blue-400"
-                        buttonGradientFrom="from-blue-500"
-                        buttonGradientTo="to-blue-600"
-                        buttonHoverGradientFrom="from-blue-600"
-                        buttonHoverGradientTo="to-blue-700"
+                        aosDelay="0"
                     />
 
                     <PricingCard
@@ -69,15 +83,7 @@ const PricingSection: React.FC = () => {
                         buttonLink="guidance"
                         isPopular={true}
                         popularText="Most Popular"
-                        aosDelay="200"
-                        gradientFrom="from-purple-900/50"
-                        gradientTo="to-blue-900/50"
-                        priceColor="text-purple-400"
-                        buttonGradientFrom="from-purple-500"
-                        buttonGradientTo="to-blue-600"
-                        buttonHoverGradientFrom="from-purple-600"
-                        buttonHoverGradientTo="to-blue-700"
-                        hasProfitGlow={true}
+                        aosDelay="100"
                     />
 
                     <PricingCard
@@ -87,12 +93,7 @@ const PricingSection: React.FC = () => {
                         features={twoHourFeatures}
                         buttonText="Book 2.5 Hours"
                         buttonLink="two-hour"
-                        aosDelay="300"
-                        priceColor="text-emerald-400"
-                        buttonGradientFrom="from-emerald-500"
-                        buttonGradientTo="to-teal-600"
-                        buttonHoverGradientFrom="from-emerald-600"
-                        buttonHoverGradientTo="to-teal-700"
+                        aosDelay="200"
                     />
 
                     <PricingCard
@@ -102,12 +103,27 @@ const PricingSection: React.FC = () => {
                         features={emergencyFeatures}
                         buttonText="Book Emergency"
                         buttonLink="emergency"
+                        aosDelay="300"
+                    />
+
+                    <PricingCard
+                        planName="Soul Mate & Dates"
+                        price="$125"
+                        pricePeriod="one-time"
+                        features={soulMateFeatures}
+                        buttonText="Find Your Soul Mate"
+                        buttonLink="soulmate"
                         aosDelay="400"
-                        priceColor="text-red-400"
-                        buttonGradientFrom="from-red-500"
-                        buttonGradientTo="to-orange-600"
-                        buttonHoverGradientFrom="from-red-600"
-                        buttonHoverGradientTo="to-orange-700"
+                    />
+
+                    <PricingCard
+                        planName="Relationship / Compatibility"
+                        price="$152"
+                        pricePeriod="one-time"
+                        features={relationshipFeatures}
+                        buttonText="Get Insights"
+                        buttonLink="relationship"
+                        aosDelay="500"
                     />
                 </div>
             </div>

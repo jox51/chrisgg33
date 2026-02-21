@@ -16,6 +16,8 @@ class WhopController extends Controller
         'guidance' => 'strategic_guidance_plan_id',
         'two-hour' => 'two_hour_plan_id',
         'emergency' => 'emergency_plan_id',
+        'soulmate' => 'soulmate_plan_id',
+        'relationship' => 'relationship_plan_id',
     ];
 
     /**
@@ -26,6 +28,8 @@ class WhopController extends Controller
         'guidance' => 'Strategic Guidance',
         'two-hour' => '2.5 Hour Session',
         'emergency' => 'Emergency Services',
+        'soulmate' => 'Soul Mate & Beneficial Dates',
+        'relationship' => 'Relationship / Compatibility',
     ];
 
     /**

@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { PageProps } from "@/types";
-import { initNavbarScrollBehavior } from "@/utils/landingPageUtils";
 import { usePage, Link } from "@inertiajs/react";
+import { Menu, X } from "lucide-react";
 import Logo from "../../../images/logo.png";
 
 interface NavigationBarProps {
@@ -15,108 +15,149 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
     auth,
     appName,
 }) => {
-    const navRef = useRef<HTMLElement>(null);
     const { blog_base_path } = usePage<PageProps>().props;
+    const [mobileOpen, setMobileOpen] = useState(false);
 
-    useEffect(() => {
-        initNavbarScrollBehavior(navRef.current);
-    }, []);
+    const navLinks = [
+        { href: "/#services", label: "Services" },
+        { href: "/#pricing", label: "Pricing" },
+        { href: "/#credentials", label: "Credentials" },
+        { href: "/#faq", label: "FAQ" },
+        { href: `/${blog_base_path}`, label: "Blog", isLink: true },
+    ];
 
     return (
         <nav
-            ref={navRef}
-            className={`fixed top-0 w-full z-50 bg-gray-900/80 backdrop-blur-lg border-b border-gray-800 transition-transform duration-300 ${className}`}
+            className={`fixed top-0 w-full z-50 bg-stone-950 border-b-[3px] border-stone-700 ${className}`}
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     <Link
                         href="/"
-                        className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent"
+                        className="flex items-center gap-2 font-serif text-2xl font-bold text-yellow-600 tracking-wide"
                     >
-                        <div className="flex items-center">
-                            <img
-                                src={Logo}
-                                alt={appName}
-                                className="w-16 h-16 object-contain"
-                            />
-                            <i className="fas fa-chart-line mr-2"></i>
-                            {appName}
-                        </div>
+                        <img
+                            src={Logo}
+                            alt="ChrisGG33"
+                            className="w-10 h-10 object-contain"
+                        />
+                        CHRISGG33
                     </Link>
+
                     <div className="hidden md:flex items-center space-x-8">
-                        <Link
-                            href="/#features"
-                            className="text-gray-300 hover:text-blue-400 transition-colors"
-                        >
-                            Features
-                        </Link>
-                        <a
-                            href="/#how-it-works"
-                            className="text-gray-300 hover:text-blue-400 transition-colors"
-                        >
-                            How It Works
-                        </a>
-                        <a
-                            href="/#pricing"
-                            className="text-gray-300 hover:text-blue-400 transition-colors"
-                        >
-                            Pricing
-                        </a>
-                        <a
-                            href="/#testimonials"
-                            className="text-gray-300 hover:text-blue-400 transition-colors"
-                        >
-                            Reviews
-                        </a>
-                        <Link
-                            href={`/${blog_base_path}`}
-                            className="text-gray-300 hover:text-blue-400 transition-colors"
-                        >
-                            Blog
-                        </Link>
+                        {navLinks.map((link) =>
+                            link.isLink ? (
+                                <Link
+                                    key={link.label}
+                                    href={link.href}
+                                    className="text-stone-400 hover:text-yellow-600 font-mono text-sm uppercase tracking-wider"
+                                >
+                                    {link.label}
+                                </Link>
+                            ) : (
+                                <a
+                                    key={link.label}
+                                    href={link.href}
+                                    className="text-stone-400 hover:text-yellow-600 font-mono text-sm uppercase tracking-wider"
+                                >
+                                    {link.label}
+                                </a>
+                            )
+                        )}
                     </div>
+
                     <div className="flex items-center space-x-4">
                         {auth?.user ? (
-                            // Logged in user display (admin access)
-                            <div className="flex items-center space-x-4">
-                                <div className="flex items-center space-x-3">
-                                    <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                                        <span className="text-white text-sm font-semibold">
-                                            {auth.user.name
-                                                .charAt(0)
-                                                .toUpperCase()}
-                                        </span>
-                                    </div>
-                                    <span className="text-gray-300 font-medium">
-                                        Welcome, {auth.user.name}
-                                    </span>
-                                </div>
+                            <div className="hidden md:flex items-center space-x-4">
+                                <span className="text-stone-400 font-mono text-sm">
+                                    {auth.user.name}
+                                </span>
                                 <a
                                     href="/dashboard"
-                                    className="text-gray-300 hover:text-blue-400 transition-colors font-medium"
+                                    className="text-stone-400 hover:text-yellow-600 font-mono text-sm uppercase tracking-wider"
                                 >
                                     Dashboard
                                 </a>
                                 <Link
                                     href={route("logout")}
                                     method="post"
-                                    className="bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 px-4 py-2 rounded-lg text-white font-semibold transition-all duration-300 transform hover:scale-105"
+                                    className="border-[2px] border-stone-700 bg-stone-900 px-4 py-1.5 text-stone-300 font-mono text-sm uppercase tracking-wider hover:border-yellow-600 hover:text-yellow-600 cursor-pointer"
                                 >
                                     Logout
                                 </Link>
                             </div>
                         ) : (
-                            // Guest — show Book Now CTA
                             <a
                                 href="/#pricing"
-                                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 px-6 py-2 rounded-lg text-white font-semibold transition-all duration-300 transform hover:scale-105"
+                                className="hidden md:block bg-yellow-600 text-stone-950 px-6 py-2 font-bold font-mono text-sm uppercase tracking-wider hover:bg-yellow-500 cursor-pointer"
+                            >
+                                Book Now
+                            </a>
+                        )}
+
+                        <button
+                            onClick={() => setMobileOpen(!mobileOpen)}
+                            className="md:hidden text-stone-400 hover:text-yellow-600 cursor-pointer"
+                            aria-label="Toggle menu"
+                        >
+                            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {mobileOpen && (
+                <div className="md:hidden bg-stone-950 border-t-[2px] border-stone-700">
+                    <div className="px-4 py-4 space-y-3">
+                        {navLinks.map((link) =>
+                            link.isLink ? (
+                                <Link
+                                    key={link.label}
+                                    href={link.href}
+                                    className="block text-stone-400 hover:text-yellow-600 font-mono text-sm uppercase tracking-wider py-2"
+                                    onClick={() => setMobileOpen(false)}
+                                >
+                                    {link.label}
+                                </Link>
+                            ) : (
+                                <a
+                                    key={link.label}
+                                    href={link.href}
+                                    className="block text-stone-400 hover:text-yellow-600 font-mono text-sm uppercase tracking-wider py-2"
+                                    onClick={() => setMobileOpen(false)}
+                                >
+                                    {link.label}
+                                </a>
+                            )
+                        )}
+                        {auth?.user ? (
+                            <>
+                                <a
+                                    href="/dashboard"
+                                    className="block text-stone-400 hover:text-yellow-600 font-mono text-sm uppercase tracking-wider py-2"
+                                >
+                                    Dashboard
+                                </a>
+                                <Link
+                                    href={route("logout")}
+                                    method="post"
+                                    className="block border-[2px] border-stone-700 bg-stone-900 px-4 py-2 text-stone-300 font-mono text-sm uppercase tracking-wider text-center hover:border-yellow-600 cursor-pointer"
+                                >
+                                    Logout
+                                </Link>
+                            </>
+                        ) : (
+                            <a
+                                href="/#pricing"
+                                className="block bg-yellow-600 text-stone-950 px-4 py-2 font-bold font-mono text-sm uppercase tracking-wider text-center hover:bg-yellow-500 cursor-pointer"
+                                onClick={() => setMobileOpen(false)}
                             >
                                 Book Now
                             </a>
                         )}
                     </div>
                 </div>
-            </div>
+            )}
         </nav>
     );
 };

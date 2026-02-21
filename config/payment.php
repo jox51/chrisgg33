@@ -68,6 +68,8 @@ return [
             'strategic_guidance_plan_id' => env('WHOP_STRATEGIC_GUIDANCE_PLAN_ID', ''),
             'two_hour_plan_id' => env('WHOP_TWO_HOUR_PLAN_ID', ''),
             'emergency_plan_id' => env('WHOP_EMERGENCY_PLAN_ID', ''),
+            'soulmate_plan_id' => env('WHOP_SOULMATE_PLAN_ID', ''),
+            'relationship_plan_id' => env('WHOP_RELATIONSHIP_PLAN_ID', ''),
             'webhook_secret' => env('WHOP_WEBHOOK_SECRET', ''),
         ],
     ],

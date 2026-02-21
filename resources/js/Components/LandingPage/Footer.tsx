@@ -8,57 +8,54 @@ interface FooterProps {
 }
 
 const Footer: React.FC<FooterProps> = ({
-    laravelVersion = "12.15.0",
-    phpVersion = "8.3.21",
     appName,
 }) => {
     return (
-        <footer className="bg-gray-900 border-t border-gray-800">
+        <footer className="bg-stone-950 border-t-[3px] border-stone-700">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div>
-                        <a
-                            href="https://google.com/"
-                            className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent mb-4 block"
-                        >
-                            <i className="fas fa-chart-line mr-2"></i>
-                            {appName}
-                        </a>
-                        <p className="text-gray-400 mb-4 max-w-md">
-                            Discover profitable crypto arbitrage opportunities
-                            across multiple exchanges with real-time alerts and
-                            advanced filtering.
+                        <span className="font-serif text-2xl font-bold text-yellow-600 tracking-wide block mb-4">
+                            CHRISGG33
+                        </span>
+                        <p className="text-stone-400 mb-4 max-w-md font-sans text-sm leading-relaxed">
+                            Strategic guidance through astrology, numerology, and
+                            esoteric knowledge. Personal development, decision making,
+                            and pattern recognition informed by historical, cultural,
+                            and symbolic frameworks.
                         </p>
-                        <div className="text-sm text-gray-500">
-                            Powered by Laravel v{laravelVersion} (PHP v
-                            {phpVersion})
-                        </div>
+                        <a
+                            href="https://x.com/DCnumerology"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-stone-500 hover:text-yellow-600 font-mono text-sm uppercase tracking-wider"
+                        >
+                            @DCNumerology on X
+                        </a>
                     </div>
-                    <div className="text-right">
-                        <div className="mb-4">
+                    <div className="md:text-right">
+                        <div className="mb-4 space-x-4">
                             <Link
                                 href={route("terms")}
-                                className="text-gray-400 hover:text-white transition-colors duration-200"
+                                className="text-stone-400 hover:text-yellow-600 font-mono text-sm uppercase tracking-wider"
                             >
                                 Terms
                             </Link>
-                            <span className="text-gray-600 mx-2">|</span>
                             <Link
                                 href={route("privacy.policy")}
-                                className="text-gray-400 hover:text-white transition-colors duration-200"
+                                className="text-stone-400 hover:text-yellow-600 font-mono text-sm uppercase tracking-wider"
                             >
-                                Privacy Policy
+                                Privacy
                             </Link>
-                            <span className="text-gray-600 mx-2">|</span>
                             <Link
                                 href={route("contact.show")}
-                                className="text-gray-400 hover:text-white transition-colors duration-200"
+                                className="text-stone-400 hover:text-yellow-600 font-mono text-sm uppercase tracking-wider"
                             >
-                                Contact Us
+                                Contact
                             </Link>
                         </div>
-                        <div className="text-gray-500">
-                            © 2025 {appName}. All rights reserved.
+                        <div className="text-stone-600 font-mono text-xs">
+                            &copy; 2019&ndash;2026 CheckMate Visions LLC. All rights reserved.
                         </div>
                     </div>
                 </div>

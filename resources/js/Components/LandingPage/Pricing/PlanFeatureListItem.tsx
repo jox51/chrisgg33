@@ -1,14 +1,17 @@
-import React from 'react';
+import React from "react";
+import { Check } from "lucide-react";
 
 interface PlanFeatureListItemProps {
     featureText: string;
 }
 
-const PlanFeatureListItem: React.FC<PlanFeatureListItemProps> = ({ featureText }) => {
+const PlanFeatureListItem: React.FC<PlanFeatureListItemProps> = ({
+    featureText,
+}) => {
     return (
         <li className="flex items-center">
-            <i className="fas fa-check text-green-400 mr-3"></i>
-            <span className="text-gray-300">{featureText}</span>
+            <Check className="text-yellow-600 mr-3 flex-shrink-0" size={16} strokeWidth={3} />
+            <span className="text-stone-300 text-sm">{featureText}</span>
         </li>
     );
 };

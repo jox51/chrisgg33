@@ -1,36 +1,28 @@
 import React from "react";
 
-interface FinalCTASectionProps {
-    headline?: string;
-    ctaText?: string;
-    ctaLink?: string;
-    subtext?: string;
-}
-
-const FinalCTASection: React.FC<FinalCTASectionProps> = ({
-    headline = "Ready to Transform Your Workflow?",
-    ctaText = "Start Your Free Trial",
-    ctaLink = "/register",
-    subtext = "Join thousands of professionals already using our platform to boost productivity and efficiency.",
-}) => {
+const FinalCTASection: React.FC = () => {
     return (
-        <section className="py-20 bg-gradient-to-br from-indigo-950/90 to-stone-900/90">
+        <section className="py-20 bg-stone-900 border-t-[3px] border-yellow-600">
             <div
                 className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
                 data-aos="fade-up"
             >
-                <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
-                    {headline}
+                <span className="section-label mb-4 block">
+                    [Get Started]
+                </span>
+                <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-stone-50">
+                    Ready to Get Strategic Guidance?
                 </h2>
-                <p className="text-xl text-gray-200 mb-8 max-w-2xl mx-auto">
-                    {subtext}
+                <p className="text-stone-400 text-lg mb-10 max-w-2xl mx-auto">
+                    Sessions focus on practical life guidance, reflection, and
+                    application — informed by Chris's experience and study of
+                    historical, cultural, and symbolic frameworks.
                 </p>
                 <a
-                    href={ctaLink}
-                    className="inline-flex items-center bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 px-12 py-4 rounded-xl text-white font-bold text-xl transition-all duration-300 transform hover:scale-105 profit-glow"
+                    href="#pricing"
+                    className="inline-block bg-yellow-600 text-stone-950 px-12 py-4 font-bold font-mono text-sm uppercase tracking-widest hover:bg-yellow-500 cursor-pointer"
                 >
-                    <i className="fas fa-rocket mr-3"></i>
-                    {ctaText}
+                    Book Your Session
                 </a>
             </div>
         </section>

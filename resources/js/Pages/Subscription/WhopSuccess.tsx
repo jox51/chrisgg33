@@ -111,7 +111,7 @@ export default function WhopSuccess({
                                                     clipRule="evenodd"
                                                 />
                                             </svg>
-                                            <span>VK will reach out to schedule your session</span>
+                                            <span>Chris will reach out to schedule your session</span>
                                         </li>
                                         <li className="flex items-start">
                                             <svg

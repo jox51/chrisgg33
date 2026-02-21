@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { PageProps } from "@/types";
 import { Head } from "@inertiajs/react";
 import Layout from "@/Components/LandingPage/Layout";
+import PromoBanner from "@/Components/LandingPage/PromoBanner";
 import HeroSection from "@/Components/LandingPage/HeroSection";
 import FeaturesSection from "@/Components/LandingPage/FeaturesSection";
 import HowItWorksSection from "@/Components/LandingPage/HowItWorksSection";
@@ -12,7 +13,6 @@ import FinalCTASection from "@/Components/LandingPage/FinalCTASection";
 import {
     initAOS,
     initSmoothScroll,
-    observeAndAnimateTickers,
 } from "@/utils/landingPageUtils";
 import { initializeGTM } from "@/utils/gtmUtils";
 
@@ -31,54 +31,31 @@ export default function Welcome({
     useEffect(() => {
         initAOS();
         initSmoothScroll();
-        observeAndAnimateTickers();
 
         initializeGTM(gtmId, {
             pageType: "welcomePageLoad",
         });
     }, []);
 
-    // How it works steps
-    const steps = [
-        {
-            number: 1,
-            title: "Connect Your Accounts",
-            description:
-                "Link your accounts securely using API keys for real-time data access and seamless integration.",
-        },
-        {
-            number: 2,
-            title: "Set Your Preferences",
-            description:
-                "Configure filters, customize settings, and set up notification preferences to match your needs.",
-        },
-        {
-            number: 3,
-            title: "Start Using",
-            description:
-                "Receive instant alerts and notifications for important updates and take action when needed.",
-        },
-    ];
-
     return (
         <>
             <Head title={appName}>
                 <meta
                     name="description"
-                    content="A powerful platform that helps you manage and optimize your workflow with advanced features and real-time insights."
+                    content="ChrisGG33 — Strategic guidance through astrology, numerology, and esoteric knowledge. Personal consultations with Chris for oppositional year prep, relationship compatibility, and life guidance."
                 />
                 <meta
                     name="keywords"
-                    content="platform, dashboard, analytics, automation, workflow, productivity, management, tools, software, application, service, solution"
+                    content="astrology, numerology, Chinese astrology, oppositional year, Year of the Horse 2026, Chris GG33, soul mate, compatibility, strategic guidance, esoteric knowledge, freemason"
                 />
-                <meta name="author" content="Your Company" />
+                <meta name="author" content="CheckMate Visions LLC" />
                 <meta name="robots" content="index, follow" />
                 <meta name="googlebot" content="index, follow" />
-                <meta name="bingbot" content="index, follow" />
-                <meta name="yandexbot" content="index, follow" />
-                <meta name="duckduckbot" content="index, follow" />
-                <meta name="sitemap" content="/sitemap.xml" />
             </Head>
+            <PromoBanner
+                message="Chinese New Year Special — 25% Off"
+                code="HORSE2026"
+            />
             <Layout laravelVersion={laravelVersion} phpVersion={phpVersion}>
                 <div>
                     <HeroSection
@@ -90,7 +67,7 @@ export default function Welcome({
 
                     <FeaturesSection />
 
-                    <HowItWorksSection title="How It Works" steps={steps} />
+                    <HowItWorksSection />
 
                     <PricingSection />
 

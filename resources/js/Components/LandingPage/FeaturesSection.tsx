@@ -1,122 +1,106 @@
 import React from "react";
 import SectionHeading from "./Shared/SectionHeading";
-import FeatureCard from "./Features/FeatureCard";
+import {
+    Shield,
+    Compass,
+    Clock,
+    AlertTriangle,
+    Heart,
+    Users,
+} from "lucide-react";
 
-interface Feature {
-    icon: string;
+interface Service {
+    icon: React.ElementType;
     title: string;
     description: string;
-    gradientFrom: string;
-    gradientTo: string;
-    borderColor: string;
-    hoverBorderColor: string;
-    titleColor: string;
+    price: string;
     aosDelay: string;
 }
 
 const FeaturesSection: React.FC = () => {
-    const features: Feature[] = [
+    const services: Service[] = [
         {
-            icon: "🎯",
-            title: "Advanced Analytics",
+            icon: Shield,
+            title: "Oppositional Year Prep",
             description:
-                "Get deep insights into your data with powerful analytics and visualization tools.",
-            gradientFrom: "from-orange-500/20",
-            gradientTo: "to-red-500/20",
-            borderColor: "border-orange-500/30",
-            hoverBorderColor: "hover:border-orange-400/50",
-            titleColor: "text-orange-400",
+                "Prepare, protect, and thrive during your enemy year. Includes a 45-minute call with Chris.",
+            price: "$170",
+            aosDelay: "0",
+        },
+        {
+            icon: Compass,
+            title: "Strategic Guidance",
+            description:
+                "Personal development, decision making, accountability, and pattern recognition with Chris.",
+            price: "$280",
             aosDelay: "100",
         },
         {
-            icon: "📈",
-            title: "Real-time Monitoring",
+            icon: Clock,
+            title: "2.5 Hour Coaching",
             description:
-                "Monitor your systems and processes in real-time with instant notifications.",
-            gradientFrom: "from-blue-500/20",
-            gradientTo: "to-cyan-500/20",
-            borderColor: "border-blue-500/30",
-            hoverBorderColor: "hover:border-blue-400/50",
-            titleColor: "text-blue-400",
+                "Extended session for in-depth personal guidance. Our best hourly rate available.",
+            price: "$440",
             aosDelay: "200",
         },
         {
-            icon: "🔄",
-            title: "Automation Tools",
+            icon: AlertTriangle,
+            title: "Emergency Services",
             description:
-                "Automate repetitive tasks and workflows to increase efficiency and productivity.",
-            gradientFrom: "from-purple-500/20",
-            gradientTo: "to-pink-500/20",
-            borderColor: "border-purple-500/30",
-            hoverBorderColor: "hover:border-purple-400/50",
-            titleColor: "text-purple-400",
+                "Need help as soon as possible? Chris will make himself available within 28 hours of your order.",
+            price: "$800",
             aosDelay: "300",
         },
         {
-            icon: "🌐",
-            title: "Multi-Platform Support",
+            icon: Heart,
+            title: "Soul Mate & Beneficial Dates",
             description:
-                "Connect and integrate with 20+ popular platforms and services simultaneously.",
-            gradientFrom: "from-green-500/20",
-            gradientTo: "to-emerald-500/20",
-            borderColor: "border-green-500/30",
-            hoverBorderColor: "hover:border-green-400/50",
-            titleColor: "text-green-400",
+                "Discover your soul mate date, the best days to take action, and which days to lay low.",
+            price: "$125",
             aosDelay: "400",
         },
         {
-            icon: "🚨",
-            title: "Smart Alerts",
+            icon: Users,
+            title: "Relationship / Compatibility",
             description:
-                "Instant notifications via email, Slack, or in-app for important events and updates.",
-            gradientFrom: "from-yellow-500/20",
-            gradientTo: "to-orange-500/20",
-            borderColor: "border-yellow-500/30",
-            hoverBorderColor: "hover:border-yellow-400/50",
-            titleColor: "text-yellow-400",
+                "30-minute astrology-based relationship insight and healing consultation with Chris.",
+            price: "$152",
             aosDelay: "500",
-        },
-        {
-            icon: "⚙️",
-            title: "Custom Filtering",
-            description:
-                "Customize your dashboard with advanced filtering, sorting, and personalization options.",
-            gradientFrom: "from-indigo-500/20",
-            gradientTo: "to-blue-500/20",
-            borderColor: "border-indigo-500/30",
-            hoverBorderColor: "hover:border-indigo-400/50",
-            titleColor: "text-indigo-400",
-            aosDelay: "600",
         },
     ];
 
     return (
-        <section id="features" className="py-20 bg-gray-900">
+        <section id="services" className="py-20 bg-stone-950">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <SectionHeading
-                    title={
-                        <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-                            Why Choose Our Platform?
-                        </span>
-                    }
-                    subtitle="Discover powerful features designed to streamline your workflow and boost productivity"
-                    subtitleClassName="text-gray-400"
+                    label="Services"
+                    title="What Chris Offers"
+                    subtitle="One-on-one mentorship conversations focused on practical life guidance, reflection, and application"
                 />
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {features.map((feature, index) => (
-                        <FeatureCard
-                            key={index}
-                            icon={feature.icon}
-                            title={feature.title}
-                            description={feature.description}
-                            gradientFrom={feature.gradientFrom}
-                            gradientTo={feature.gradientTo}
-                            borderColor={feature.borderColor}
-                            hoverBorderColor={feature.hoverBorderColor}
-                            titleColor={feature.titleColor}
-                            aosDelay={feature.aosDelay}
-                        />
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {services.map((service) => (
+                        <div
+                            key={service.title}
+                            className="border-[3px] border-stone-700 bg-stone-900 p-8 hover:border-yellow-600 cursor-default"
+                            data-aos="fade-up"
+                            data-aos-delay={service.aosDelay}
+                        >
+                            <service.icon
+                                className="text-yellow-600 mb-4"
+                                size={28}
+                                strokeWidth={2}
+                            />
+                            <h3 className="font-serif text-2xl font-bold text-stone-50 mb-3">
+                                {service.title}
+                            </h3>
+                            <p className="text-stone-400 text-sm leading-relaxed mb-4">
+                                {service.description}
+                            </p>
+                            <span className="font-serif text-xl font-bold text-yellow-600">
+                                {service.price}
+                            </span>
+                        </div>
                     ))}
                 </div>
             </div>

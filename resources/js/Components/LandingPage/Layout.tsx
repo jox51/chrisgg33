@@ -20,7 +20,7 @@ const Layout: React.FC<LayoutProps> = ({
     return (
         <>
             <NavigationBar auth={auth} appName={appName} />
-            <main className="bg-gray-900 min-h-screen">{children}</main>
+            <main className="bg-stone-950 min-h-screen">{children}</main>
             <Footer
                 laravelVersion={laravelVersion}
                 phpVersion={phpVersion}
