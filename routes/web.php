@@ -67,6 +67,7 @@ Route::get('/subscribe/whop/{planType}', [WhopController::class, 'createSubscrip
 Route::get('/whop/subscription-success', [WhopController::class, 'subscriptionSuccess'])->name('whop.subscription.success');
 Route::get('/whop/subscription-cancel', [WhopController::class, 'subscriptionCancel'])->name('whop.subscription.cancel');
 Route::get('/whop/payment-status/{paymentId}', [WhopController::class, 'checkPaymentStatus'])->name('whop.payment.status');
+Route::post('/whop/payment/{paymentId}/contact', [WhopController::class, 'saveContactInfo'])->name('whop.payment.contact');
 
     // Blog routes
 $blogBasePath = config('blog.base_path', 'blog');

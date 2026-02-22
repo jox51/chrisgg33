@@ -80,6 +80,9 @@
             <p><strong>Price:</strong> {{ $price }}</p>
             <p><strong>Status:</strong> <span class="status-badge">{{ ucfirst($subscriptionStatus) }}</span></p>
             <p><strong>Email:</strong> {{ $user->email }}</p>
+            @if($phone)
+            <p><strong>Phone:</strong> {{ $phone }}</p>
+            @endif
         </div>
 
         <p>Here's what happens next:</p>

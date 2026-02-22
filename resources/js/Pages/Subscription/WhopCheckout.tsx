@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { Head } from '@inertiajs/react';
 import { WhopCheckoutEmbed } from "@whop/checkout/react";
 
@@ -10,6 +10,12 @@ interface WhopCheckoutProps {
 }
 
 export default function WhopCheckout({ planId, planType, planName, paymentId }: WhopCheckoutProps) {
+    const [phone, setPhone] = useState('');
+    const [phoneSaved, setPhoneSaved] = useState(false);
+    const [phoneError, setPhoneError] = useState('');
+    const savedPhoneRef = useRef('');
+    const debounceRef = useRef<NodeJS.Timeout>();
+
     // Poll server for payment completion (webhook updates the Payment record)
     useEffect(() => {
         let pollInterval: NodeJS.Timeout;
@@ -43,6 +49,53 @@ export default function WhopCheckout({ planId, planType, planName, paymentId }: 
             if (pollInterval) clearInterval(pollInterval);
         };
     }, [paymentId]);
+
+    const savePhone = useCallback(async (value: string) => {
+        const cleaned = value.trim();
+        if (!cleaned || cleaned === savedPhoneRef.current) return;
+
+        if (!/^[\d\s\+\-\(\)]{7,20}$/.test(cleaned)) {
+            setPhoneError('Please enter a valid phone number.');
+            setPhoneSaved(false);
+            return;
+        }
+
+        setPhoneError('');
+
+        try {
+            const response = await fetch(`/whop/payment/${paymentId}/contact`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({ phone: cleaned }),
+            });
+
+            if (response.ok) {
+                savedPhoneRef.current = cleaned;
+                setPhoneSaved(true);
+            }
+        } catch (error) {
+            // Silent fail — webhook will still work, just without phone
+        }
+    }, [paymentId]);
+
+    const handlePhoneChange = (value: string) => {
+        setPhone(value);
+        setPhoneSaved(false);
+
+        // Debounce auto-save: save 1s after user stops typing
+        if (debounceRef.current) clearTimeout(debounceRef.current);
+        debounceRef.current = setTimeout(() => savePhone(value), 1000);
+    };
+
+    // Cleanup debounce on unmount
+    useEffect(() => {
+        return () => {
+            if (debounceRef.current) clearTimeout(debounceRef.current);
+        };
+    }, []);
 
     if (!planId) {
         return (
@@ -78,6 +131,35 @@ export default function WhopCheckout({ planId, planType, planName, paymentId }: 
                                     </h3>
                                     <p className="text-gray-400">
                                         Secure checkout powered by Whop
+                                    </p>
+                                </div>
+
+                                <div className="mb-6 bg-gray-900 rounded-lg p-4 border border-gray-700">
+                                    <label
+                                        htmlFor="phone"
+                                        className="block text-sm font-medium text-gray-300 mb-2"
+                                    >
+                                        Phone Number <span className="text-red-400">*</span>
+                                    </label>
+                                    <div className="flex items-center gap-3">
+                                        <input
+                                            id="phone"
+                                            type="tel"
+                                            value={phone}
+                                            onChange={(e) => handlePhoneChange(e.target.value)}
+                                            onBlur={() => savePhone(phone)}
+                                            placeholder="+1 (555) 000-0000"
+                                            className="flex-1 px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                                        />
+                                        {phoneSaved && (
+                                            <span className="text-green-400 text-sm whitespace-nowrap">Saved</span>
+                                        )}
+                                    </div>
+                                    {phoneError && (
+                                        <p className="mt-2 text-sm text-red-400" role="alert">{phoneError}</p>
+                                    )}
+                                    <p className="mt-2 text-xs text-gray-500">
+                                        So Chris can contact you to schedule your session.
                                     </p>
                                 </div>
 

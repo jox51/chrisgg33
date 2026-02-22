@@ -23,7 +23,8 @@ class AdminNewSubscriptionEmail extends Mailable
         public object $user,
         public string $planName,
         public string $price,
-        public string $subscriptionStatus
+        public string $subscriptionStatus,
+        public string $phone = ''
     ) {
         //
     }

@@ -8,6 +8,7 @@ class Payment extends Model
 {
     protected $fillable = [
         'email',
+        'phone',
         'whop_payment_id',
         'whop_membership_id',
         'plan_type',

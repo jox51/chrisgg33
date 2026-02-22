@@ -81,6 +81,9 @@
             <h3>Buyer Information:</h3>
             <p><strong>Name:</strong> {{ $user->name }}</p>
             <p><strong>Email:</strong> {{ $user->email }}</p>
+            @if($phone)
+            <p><strong>Phone:</strong> {{ $phone }}</p>
+            @endif
             @if($user instanceof \App\Models\User)
             <p><strong>User ID:</strong> #{{ $user->id }}</p>
             <p><strong>Registration Date:</strong> {{ $user->created_at->format('M d, Y \a\t g:i A') }}</p>

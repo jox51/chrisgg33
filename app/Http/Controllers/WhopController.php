@@ -100,6 +100,36 @@ class WhopController extends Controller
     }
 
     /**
+     * Save contact info to a pending Payment record before checkout completes
+     */
+    public function saveContactInfo(Request $request, int $paymentId)
+    {
+        $request->validate([
+            'phone' => 'required|string|max:30',
+        ]);
+
+        $payment = Payment::find($paymentId);
+
+        if (!$payment) {
+            return response()->json(['error' => 'Payment not found'], 404);
+        }
+
+        if ($payment->status !== 'pending') {
+            return response()->json(['error' => 'Payment is no longer pending'], 422);
+        }
+
+        $payment->update([
+            'phone' => $request->input('phone'),
+        ]);
+
+        Log::info('Contact info saved to pending payment', [
+            'payment_id' => $payment->id,
+        ]);
+
+        return response()->json(['message' => 'Contact info saved'], 200);
+    }
+
+    /**
      * Handle payment success callback
      */
     public function subscriptionSuccess(Request $request)
