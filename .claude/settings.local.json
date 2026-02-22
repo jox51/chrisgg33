@@ -7,7 +7,8 @@
       "Bash(npm install:*)",
       "WebFetch(domain:dcnumerology.com)",
       "Bash(python3:*)",
-      "Bash(php -l:*)"
+      "Bash(php -l:*)",
+      "Bash(xargs basename:*)"
     ],
     "deny": [],
     "ask": []

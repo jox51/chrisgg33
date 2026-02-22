@@ -102,6 +102,8 @@ return [
 
         'whop' => [
             'enabled' => env('WHOP_ENABLED', false),
+            'api_key' => env('WHOP_API_KEY', ''),
+            'api_url' => env('WHOP_API_URL', 'https://api.whop.com/api/v1'),
             'chris_opposition_plan_id' => env('WHOP_CHRIS_OPPOSITION_PLAN_ID', ''),
             'strategic_guidance_plan_id' => env('WHOP_STRATEGIC_GUIDANCE_PLAN_ID', ''),
             'two_hour_plan_id' => env('WHOP_TWO_HOUR_PLAN_ID', ''),

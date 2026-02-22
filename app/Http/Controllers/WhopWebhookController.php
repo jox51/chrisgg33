@@ -6,6 +6,7 @@ use App\Models\Payment;
 use App\Models\User;
 use App\Mail\UserSubscriptionConfirmationEmail;
 use App\Mail\AdminNewSubscriptionEmail;
+use App\Jobs\CancelWhopMembership;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -78,6 +79,7 @@ class WhopWebhookController extends Controller
             if (!$payment) {
                 $payment = Payment::where('plan_id', $planId)
                     ->where('status', 'pending')
+                    ->where('created_at', '>=', now()->subMinutes(10))
                     ->latest()
                     ->first();
             }
@@ -94,7 +96,7 @@ class WhopWebhookController extends Controller
                 ]);
                 Log::info('Payment record updated to paid', ['payment_id' => $payment->id]);
             } else {
-                Payment::create([
+                $payment = Payment::create([
                     'email' => $email,
                     'whop_payment_id' => $receiptId,
                     'whop_membership_id' => $membershipId,
@@ -152,6 +154,9 @@ class WhopWebhookController extends Controller
             } catch (\Exception $e) {
                 Log::error('Failed to send Whop purchase confirmation emails: ' . $e->getMessage());
             }
+
+            // Cancel Whop membership asynchronously to allow repeat purchases
+            $this->cancelWhopMembership($payment);
 
             return response()->json(['message' => 'Payment processed successfully'], 200);
 
@@ -221,6 +226,26 @@ class WhopWebhookController extends Controller
             Log::error('Error processing Whop subscription expiration: ' . $e->getMessage());
             return response()->json(['error' => 'Internal server error'], 500);
         }
+    }
+
+    /**
+     * Cancel Whop membership asynchronously after successful payment
+     */
+    private function cancelWhopMembership(Payment $payment): void
+    {
+        if (empty($payment->whop_membership_id)) {
+            Log::info("No Whop membership ID found for payment {$payment->id}, skipping cancellation");
+            return;
+        }
+
+        CancelWhopMembership::dispatch($payment)
+            ->delay(now()->addSeconds(5));
+
+        Log::info("Whop membership cancellation job dispatched for payment {$payment->id}", [
+            'payment_id' => $payment->id,
+            'membership_id' => $payment->whop_membership_id,
+            'customer_email' => $payment->email,
+        ]);
     }
 
     /**
