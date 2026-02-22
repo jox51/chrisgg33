@@ -42,7 +42,7 @@ export default function Welcome({
                 />
                 <meta
                     name="keywords"
-                    content="astrology, numerology, Chinese astrology, oppositional year, Year of the Horse 2026, Chris GG33, soul mate, compatibility, strategic guidance, esoteric knowledge, freemason"
+                    content="astrology, numerology, Chinese astrology, oppositional year, Year of the Horse 2026, Chris GG33, soul mate, compatibility, strategic guidance, esoteric knowledge, gg33 capo"
                 />
                 <meta name="author" content="D28 Services" />
                 <meta name="robots" content="index, follow" />

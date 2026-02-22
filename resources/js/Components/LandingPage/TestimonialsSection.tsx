@@ -32,7 +32,7 @@ const credentials: Credential[] = [
     },
     {
         icon: Star,
-        text: "32\u00b0 Freemason",
+        text: "GG33\u00b0 Capo",
     },
     {
         icon: Crown,
@@ -49,9 +49,18 @@ const credentials: Credential[] = [
 ];
 
 const pressOutlets = [
-    { name: "Billboard", url: "https://twitter.com/billboard?t=ggj0MhUcx91ooC-YbioJ1A&s=09" },
-    { name: "HuffPost", url: "https://twitter.com/HuffPost?t=TwR0NvMQrhSOkCj0QOKWBg&s=09" },
-    { name: "Newsweek", url: "https://twitter.com/Newsweek?t=tb889ae-XchitjNkEqbbVg&s=09" },
+    {
+        name: "Billboard",
+        url: "https://twitter.com/billboard?t=ggj0MhUcx91ooC-YbioJ1A&s=09",
+    },
+    {
+        name: "HuffPost",
+        url: "https://twitter.com/HuffPost?t=TwR0NvMQrhSOkCj0QOKWBg&s=09",
+    },
+    {
+        name: "Newsweek",
+        url: "https://twitter.com/Newsweek?t=tb889ae-XchitjNkEqbbVg&s=09",
+    },
 ];
 
 const TestimonialsSection: React.FC = () => {
@@ -75,7 +84,9 @@ const TestimonialsSection: React.FC = () => {
                         <StaggerItem key={cred.text}>
                             <motion.div
                                 className="border-[3px] border-stone-700 bg-stone-950 p-6 text-center cursor-default"
-                                whileHover={prefersReduced ? undefined : cardHover}
+                                whileHover={
+                                    prefersReduced ? undefined : cardHover
+                                }
                             >
                                 <cred.icon
                                     className="text-yellow-600 mx-auto mb-3"
@@ -92,7 +103,11 @@ const TestimonialsSection: React.FC = () => {
 
                 <ScrollReveal className="border-t-[3px] border-stone-700 pt-8 text-center">
                     <div className="flex items-center justify-center gap-2 mb-4">
-                        <Newspaper className="text-yellow-600" size={20} strokeWidth={2} />
+                        <Newspaper
+                            className="text-yellow-600"
+                            size={20}
+                            strokeWidth={2}
+                        />
                         <span className="font-mono text-xs uppercase tracking-wider text-stone-400">
                             As Seen On
                         </span>

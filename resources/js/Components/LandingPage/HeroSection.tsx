@@ -28,7 +28,7 @@ const credentials = [
     },
     {
         icon: Star,
-        text: "32\u00b0 Freemason",
+        text: "GG33\u00b0 Capo",
     },
     {
         icon: Newspaper,
