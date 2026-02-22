@@ -71,7 +71,7 @@ const Footer: React.FC<FooterProps> = ({
                             </Link>
                         </div>
                         <div className="text-stone-600 font-mono text-xs">
-                            &copy; 2019&ndash;2026 CheckMate Visions LLC. All rights reserved.
+                            &copy; 2022&ndash;2026 D28 Services. All rights reserved.
                         </div>
                     </div>
                 </div>

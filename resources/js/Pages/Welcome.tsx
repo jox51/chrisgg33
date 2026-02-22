@@ -44,7 +44,7 @@ export default function Welcome({
                     name="keywords"
                     content="astrology, numerology, Chinese astrology, oppositional year, Year of the Horse 2026, Chris GG33, soul mate, compatibility, strategic guidance, esoteric knowledge, freemason"
                 />
-                <meta name="author" content="CheckMate Visions LLC" />
+                <meta name="author" content="D28 Services" />
                 <meta name="robots" content="index, follow" />
                 <meta name="googlebot" content="index, follow" />
             </Head>
