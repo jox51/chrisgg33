@@ -19,16 +19,22 @@ class WhopWebhookController extends Controller
         // Log the webhook for debugging
         Log::info('Whop webhook received', $request->all());
 
-        $event = $request->input('event');
+        $event = $request->input('type');
         $data = $request->input('data');
 
         switch ($event) {
             case 'checkout.session.completed':
             case 'membership.created':
+            case 'membership.activated':
             case 'payment.succeeded':
                 return $this->handleSuccessfulPayment($data);
 
+            case 'payment.created':
+                Log::info('Whop payment created (pending)', ['id' => $data['id'] ?? null]);
+                return response()->json(['message' => 'Payment created acknowledged'], 200);
+
             case 'membership.cancelled':
+            case 'membership.deactivated':
             case 'payment.failed':
                 return $this->handleFailedPayment($data);
 
@@ -48,8 +54,8 @@ class WhopWebhookController extends Controller
     {
         try {
             // Extract relevant data from Whop webhook
-            $email = $data['email'] ?? $data['customer']['email'] ?? null;
-            $planId = $data['plan_id'] ?? $data['product']['id'] ?? null;
+            $email = $data['user']['email'] ?? $data['email'] ?? $data['customer']['email'] ?? null;
+            $planId = $data['plan']['id'] ?? $data['plan_id'] ?? $data['product']['id'] ?? null;
             $receiptId = $data['id'] ?? $data['receipt_id'] ?? null;
 
             if (!$email) {
@@ -57,13 +63,16 @@ class WhopWebhookController extends Controller
                 return response()->json(['error' => 'Missing required data'], 400);
             }
 
-            // Find the user by email
+            // Determine plan slug and resolve display name + price
+            $planSlug = $this->determinePlanType($planId);
+            $planName = config("payment.plan_names.{$planSlug}", ucfirst($planSlug));
+            $price = config("payment.plan_prices.{$planSlug}", 'N/A');
+
+            // Find the user by email (may not exist)
             $user = User::where('email', $email)->first();
+            $buyerName = $data['user']['name'] ?? $data['user']['username'] ?? 'Customer';
 
             if ($user) {
-                // Determine plan type
-                $planType = $this->determinePlanType($planId);
-
                 // Update user subscription status
                 $user->update([
                     'payment_provider' => 'whop',
@@ -71,17 +80,27 @@ class WhopWebhookController extends Controller
                     'subscription_status' => 'active',
                 ]);
 
-                // Send confirmation emails
-                try {
-                    Mail::to($user->email)->send(new UserSubscriptionConfirmationEmail($user, $planType, 'active'));
-                    Mail::to(config('mail.from.address'))->send(new AdminNewSubscriptionEmail($user, $planType, 'active'));
-                } catch (\Exception $e) {
-                    Log::error('Failed to send Whop subscription confirmation emails: ' . $e->getMessage());
-                }
-
                 Log::info('Whop subscription activated for: ' . $email);
             } else {
-                Log::warning('No user found for email: ' . $email);
+                Log::info('Whop purchase by non-registered user: ' . $email);
+            }
+
+            // Build buyer object for emails (use User if exists, otherwise stdClass)
+            $buyer = $user ?? (object) [
+                'name' => $buyerName,
+                'email' => $email,
+            ];
+
+            // Send confirmation emails
+            try {
+                Mail::to($email)->send(new UserSubscriptionConfirmationEmail($buyer, $planName, $price, 'active'));
+
+                $adminEmail = config('payment.purchase_notification_email');
+                if ($adminEmail) {
+                    Mail::to($adminEmail)->send(new AdminNewSubscriptionEmail($buyer, $planName, $price, 'active'));
+                }
+            } catch (\Exception $e) {
+                Log::error('Failed to send Whop purchase confirmation emails: ' . $e->getMessage());
             }
 
             return response()->json(['message' => 'Payment processed successfully'], 200);
@@ -98,7 +117,7 @@ class WhopWebhookController extends Controller
     private function handleFailedPayment($data)
     {
         try {
-            $email = $data['email'] ?? $data['customer']['email'] ?? null;
+            $email = $data['user']['email'] ?? $data['email'] ?? $data['customer']['email'] ?? null;
 
             if (!$email) {
                 return response()->json(['error' => 'Missing email'], 400);
@@ -129,7 +148,7 @@ class WhopWebhookController extends Controller
     private function handleExpiredSubscription($data)
     {
         try {
-            $email = $data['email'] ?? $data['customer']['email'] ?? null;
+            $email = $data['user']['email'] ?? $data['email'] ?? $data['customer']['email'] ?? null;
 
             if (!$email) {
                 return response()->json(['error' => 'Missing email'], 400);
@@ -155,21 +174,29 @@ class WhopWebhookController extends Controller
     }
 
     /**
-     * Determine plan type from plan ID
+     * Determine plan slug from Whop plan ID
      */
     protected function determinePlanType(?string $planId): string
     {
         if (!$planId) {
-            return 'monthly';
+            return 'unknown';
         }
 
-        $monthlyPlanId = config('payment.providers.whop.monthly_plan_id');
-        $yearlyPlanId = config('payment.providers.whop.yearly_plan_id');
+        $planMap = [
+            'opposition' => 'chris_opposition_plan_id',
+            'guidance' => 'strategic_guidance_plan_id',
+            'two-hour' => 'two_hour_plan_id',
+            'emergency' => 'emergency_plan_id',
+            'soulmate' => 'soulmate_plan_id',
+            'relationship' => 'relationship_plan_id',
+        ];
 
-        if ($planId === $yearlyPlanId) {
-            return 'yearly';
+        foreach ($planMap as $slug => $configKey) {
+            if (config("payment.providers.whop.{$configKey}") === $planId) {
+                return $slug;
+            }
         }
 
-        return 'monthly';
+        return 'unknown';
     }
 }

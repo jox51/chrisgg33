@@ -301,22 +301,28 @@ class StripeWebhookController extends CashierWebhookController
         try {
             // Determine plan type from subscription
             $planType = $this->determinePlanType($subscription);
+            $planName = ucfirst($planType) . ' Plan';
             $subscriptionStatus = $subscription->stripe_status ?? 'active';
 
+            // Get price from Stripe subscription
+            $stripeSubscription = $subscription->asStripeSubscription();
+            $amount = $stripeSubscription->items->data[0]->price->unit_amount ?? 0;
+            $price = '$' . number_format($amount / 100, 2);
+
             // Send confirmation email to user
-            Mail::to($user->email)->send(new UserSubscriptionConfirmationEmail($user, $planType, $subscriptionStatus));
-            
+            Mail::to($user->email)->send(new UserSubscriptionConfirmationEmail($user, $planName, $price, $subscriptionStatus));
+
             // Send notification email to admin
-            $adminEmail = config('mail.from.address');
+            $adminEmail = config('payment.purchase_notification_email');
             if ($adminEmail) {
-                Mail::to($adminEmail)->send(new AdminNewSubscriptionEmail($user, $planType, $subscriptionStatus));
+                Mail::to($adminEmail)->send(new AdminNewSubscriptionEmail($user, $planName, $price, $subscriptionStatus));
             }
 
             Log::info('Subscription emails sent successfully', [
                 'user_id' => $user->id,
                 'user_email' => $user->email,
                 'admin_email' => $adminEmail,
-                'plan_type' => $planType,
+                'plan_name' => $planName,
                 'subscription_status' => $subscriptionStatus
             ]);
 

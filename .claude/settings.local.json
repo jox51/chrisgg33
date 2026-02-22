@@ -6,7 +6,8 @@
       "Bash(npm run build:*)",
       "Bash(npm install:*)",
       "WebFetch(domain:dcnumerology.com)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(php -l:*)"
     ],
     "deny": [],
     "ask": []

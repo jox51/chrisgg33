@@ -16,6 +16,44 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Purchase Notification Email
+    |--------------------------------------------------------------------------
+    |
+    | The email address where purchase/order notifications will be sent.
+    |
+    */
+
+    'purchase_notification_email' => env('PURCHASE_EMAIL_ADDRESS', env('MAIL_FROM_ADDRESS', 'hello@example.com')),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Plan Names & Prices
+    |--------------------------------------------------------------------------
+    |
+    | Display names and prices for each service plan, keyed by slug.
+    |
+    */
+
+    'plan_names' => [
+        'opposition' => 'Oppositional Year Prep',
+        'guidance' => 'Strategic Guidance',
+        'two-hour' => '2.5 Hour Session',
+        'emergency' => 'Emergency Services',
+        'soulmate' => 'Soul Mate & Beneficial Dates',
+        'relationship' => 'Relationship / Compatibility',
+    ],
+
+    'plan_prices' => [
+        'opposition' => '$170',
+        'guidance' => '$280',
+        'two-hour' => '$440',
+        'emergency' => '$800',
+        'soulmate' => '$125',
+        'relationship' => '$152',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Payment Providers
     |--------------------------------------------------------------------------
     |

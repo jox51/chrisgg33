@@ -61,9 +61,9 @@
         
         <p>Here's what you can do next:</p>
         <ul>
-            <li>Explore our features and tools</li>
-            <li>Complete your profile setup</li>
-            <li>Start using our services</li>
+            <li>Browse our available services, including consultations, sessions, and readings</li>
+            <li>Book a session with Chris for personalized guidance</li>
+            <li>Access your dashboard to manage your account</li>
         </ul>
         
         <div style="text-align: center;">

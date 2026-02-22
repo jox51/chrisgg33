@@ -180,11 +180,17 @@ class PayPalController extends Controller
 
                 // Determine plan type from subscription
                 $planType = $this->determinePlanType($subscription);
+                $planName = ucfirst($planType) . ' Plan';
+                $price = 'N/A';
 
                 // Send confirmation emails
                 try {
-                    Mail::to($user->email)->send(new UserSubscriptionConfirmationEmail($user, $planType, 'active'));
-                    Mail::to(config('mail.from.address'))->send(new AdminNewSubscriptionEmail($user, $planType, 'active'));
+                    Mail::to($user->email)->send(new UserSubscriptionConfirmationEmail($user, $planName, $price, 'active'));
+
+                    $adminEmail = config('payment.purchase_notification_email');
+                    if ($adminEmail) {
+                        Mail::to($adminEmail)->send(new AdminNewSubscriptionEmail($user, $planName, $price, 'active'));
+                    }
                 } catch (\Exception $e) {
                     Log::error('PayPal subscription email error', [
                         'error' => $e->getMessage(),

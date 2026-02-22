@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subscription Confirmed - {{ config('app.name') }}</title>
+    <title>Purchase Confirmed - {{ config('app.name') }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -66,41 +66,44 @@
 </head>
 <body>
     <div class="header">
-        <h1>🎉 Subscription Confirmed!</h1>
+        <h1>Purchase Confirmed!</h1>
     </div>
 
     <div class="content">
         <h2>Hello {{ $user->name }}!</h2>
-        
-        <p>Great news! Your subscription to {{ config('app.name') }} has been successfully confirmed.</p>
-        
+
+        <p>Great news! Your purchase of <strong>{{ $planName }}</strong> has been confirmed.</p>
+
         <div class="subscription-details">
-            <h3>Subscription Details:</h3>
-            <p><strong>Plan:</strong> {{ ucfirst($planType) }} Plan</p>
+            <h3>Purchase Details:</h3>
+            <p><strong>Service:</strong> {{ $planName }}</p>
+            <p><strong>Price:</strong> {{ $price }}</p>
             <p><strong>Status:</strong> <span class="status-badge">{{ ucfirst($subscriptionStatus) }}</span></p>
-            <p><strong>Account Email:</strong> {{ $user->email }}</p>
+            <p><strong>Email:</strong> {{ $user->email }}</p>
         </div>
-        
-        <p>You now have full access to all premium features. Here's what you can do next:</p>
+
+        <p>Here's what happens next:</p>
         <ul>
-            <li>Access all premium tools and features</li>
-            <li>Enjoy unlimited usage based on your plan</li>
-            <li>Get priority customer support</li>
-            <li>Manage your subscription anytime</li>
+            <li>Chris will reach out to schedule your session</li>
+            <li>Check your email for scheduling details</li>
+            <li>Prepare any questions you'd like to discuss</li>
+            <li>Contact us if you need to reschedule</li>
         </ul>
-        
+
+        @if($user instanceof \App\Models\User)
         <div style="text-align: center;">
             <a href="{{ route('dashboard') }}" class="btn">Access Your Dashboard</a>
         </div>
-        
-        <p>If you have any questions about your subscription or need assistance, please don't hesitate to contact our support team.</p>
-        
+        @endif
+
+        <p>If you have any questions about your purchase or need assistance, please don't hesitate to contact our support team.</p>
+
         <p>Thank you for choosing {{ config('app.name') }}!</p>
         <p>The {{ config('app.name') }} Team</p>
     </div>
 
     <div class="footer">
-        <p>This email was sent to {{ $user->email }} regarding your subscription to {{ config('app.name') }}.</p>
+        <p>This email was sent to {{ $user->email ?? '' }} regarding your purchase on {{ config('app.name') }}.</p>
         <p>&copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.</p>
     </div>
 </body>

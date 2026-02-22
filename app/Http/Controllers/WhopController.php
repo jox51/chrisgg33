@@ -21,16 +21,12 @@ class WhopController extends Controller
     ];
 
     /**
-     * Plan display names
+     * Get plan display name from config
      */
-    protected array $planNames = [
-        'opposition' => 'Oppositional Year Prep',
-        'guidance' => 'Strategic Guidance',
-        'two-hour' => '2.5 Hour Session',
-        'emergency' => 'Emergency Services',
-        'soulmate' => 'Soul Mate & Beneficial Dates',
-        'relationship' => 'Relationship / Compatibility',
-    ];
+    protected function getPlanName(string $planSlug): string
+    {
+        return config("payment.plan_names.{$planSlug}", ucfirst($planSlug));
+    }
 
     /**
      * Get Whop plan ID based on plan slug
@@ -71,7 +67,7 @@ class WhopController extends Controller
         return Inertia::render('Subscription/WhopCheckout', [
             'planId' => $planId,
             'planType' => $planType,
-            'planName' => $this->planNames[$planType] ?? ucfirst($planType),
+            'planName' => $this->getPlanName($planType),
         ]);
     }
 
@@ -88,7 +84,7 @@ class WhopController extends Controller
         }
 
         $planType = $this->determinePlanType($planId);
-        $planName = $this->planNames[$planType] ?? ucfirst($planType);
+        $planName = $this->getPlanName($planType);
 
         Log::info('Whop payment success', [
             'receipt_id' => $receiptId,

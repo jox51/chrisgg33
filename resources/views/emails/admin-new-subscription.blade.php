@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Subscription - {{ config('app.name') }}</title>
+    <title>New Purchase - {{ config('app.name') }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -69,40 +69,45 @@
 </head>
 <body>
     <div class="header">
-        <h1>📈 New Subscription Alert</h1>
+        <h1>New Purchase Alert</h1>
     </div>
 
     <div class="content">
-        <h2>New Subscription Notification</h2>
-        
-        <p>A new user has successfully subscribed to {{ config('app.name') }}. Here are the details:</p>
+        <h2>New Purchase Notification</h2>
+
+        <p>A new purchase has been made on {{ config('app.name') }}. Here are the details:</p>
         
         <div class="user-details">
-            <h3>User Information:</h3>
+            <h3>Buyer Information:</h3>
             <p><strong>Name:</strong> {{ $user->name }}</p>
             <p><strong>Email:</strong> {{ $user->email }}</p>
+            @if($user instanceof \App\Models\User)
             <p><strong>User ID:</strong> #{{ $user->id }}</p>
             <p><strong>Registration Date:</strong> {{ $user->created_at->format('M d, Y \a\t g:i A') }}</p>
+            @else
+            <p><em>No account on {{ config('app.name') }}</em></p>
+            @endif
         </div>
         
         <div class="subscription-details">
-            <h3>Subscription Details:</h3>
-            <p><strong>Plan Type:</strong> {{ ucfirst($planType) }} Plan</p>
+            <h3>Purchase Details:</h3>
+            <p><strong>Service:</strong> {{ $planName }}</p>
+            <p><strong>Price:</strong> {{ $price }}</p>
             <p><strong>Status:</strong> <span class="status-badge">{{ ucfirst($subscriptionStatus) }}</span></p>
-            <p><strong>Subscription Date:</strong> {{ now()->format('M d, Y \a\t g:i A') }}</p>
+            <p><strong>Purchase Date:</strong> {{ now()->format('M d, Y \a\t g:i A') }}</p>
         </div>
-        
+
         <div class="alert">
-            <strong>Action Required:</strong> You may want to review the new subscription and ensure the user has proper access to premium features.
+            <strong>Action Required:</strong> Please reach out to schedule the client's session.
         </div>
-        
-        <p>This notification was automatically generated when the subscription was successfully processed through Stripe.</p>
+
+        <p>This notification was automatically generated when the purchase was successfully processed.</p>
         
         <p>Best regards,<br>{{ config('app.name') }} System</p>
     </div>
 
     <div class="footer">
-        <p>This is an automated notification sent to {{ config('mail.from.address') }} regarding new subscriptions.</p>
+        <p>This is an automated notification regarding new purchases on {{ config('app.name') }}.</p>
         <p>&copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.</p>
     </div>
 </body>

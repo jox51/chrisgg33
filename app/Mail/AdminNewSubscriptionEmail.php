@@ -16,10 +16,13 @@ class AdminNewSubscriptionEmail extends Mailable
 
     /**
      * Create a new message instance.
+     *
+     * @param User|object $user User model or object with name/email properties
      */
     public function __construct(
-        public User $user,
-        public string $planType,
+        public object $user,
+        public string $planName,
+        public string $price,
         public string $subscriptionStatus
     ) {
         //
@@ -31,7 +34,7 @@ class AdminNewSubscriptionEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'New Subscription - ' . config('app.name'),
+            subject: 'New Purchase: ' . $this->planName . ' (' . $this->price . ') - ' . config('app.name'),
         );
     }
 
