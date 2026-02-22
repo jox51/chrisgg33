@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Payment;
 use App\Models\User;
 use App\Mail\UserSubscriptionConfirmationEmail;
 use App\Mail\AdminNewSubscriptionEmail;
@@ -61,6 +62,50 @@ class WhopWebhookController extends Controller
             if (!$email) {
                 Log::error('Missing email in Whop webhook', $data);
                 return response()->json(['error' => 'Missing required data'], 400);
+            }
+
+            // Update the pending Payment record so the frontend poll can detect completion
+            $membershipId = $data['membership']['id'] ?? null;
+            $amount = $data['total'] ?? $data['subtotal'] ?? 0;
+            $currency = $data['currency'] ?? null;
+
+            $payment = Payment::where('whop_payment_id', $receiptId)->first();
+
+            if (!$payment && $membershipId) {
+                $payment = Payment::where('whop_membership_id', $membershipId)->first();
+            }
+
+            if (!$payment) {
+                $payment = Payment::where('plan_id', $planId)
+                    ->where('status', 'pending')
+                    ->latest()
+                    ->first();
+            }
+
+            if ($payment) {
+                $payment->update([
+                    'email' => $email,
+                    'whop_payment_id' => $receiptId,
+                    'whop_membership_id' => $membershipId,
+                    'status' => 'paid',
+                    'amount' => $amount,
+                    'currency' => $currency,
+                    'paid_at' => now(),
+                ]);
+                Log::info('Payment record updated to paid', ['payment_id' => $payment->id]);
+            } else {
+                Payment::create([
+                    'email' => $email,
+                    'whop_payment_id' => $receiptId,
+                    'whop_membership_id' => $membershipId,
+                    'plan_type' => $this->determinePlanType($planId),
+                    'plan_id' => $planId,
+                    'status' => 'paid',
+                    'amount' => $amount,
+                    'currency' => $currency,
+                    'paid_at' => now(),
+                ]);
+                Log::info('New payment record created as paid (no pending record found)');
             }
 
             // Determine plan slug and resolve display name + price

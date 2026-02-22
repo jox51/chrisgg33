@@ -70,12 +70,14 @@ export default function WhopSuccess({
                                             </div>
                                         </div>
 
-                                        <div className="bg-gray-800 p-4 rounded-lg border border-gray-700 md:col-span-2">
-                                            <div className="text-sm text-gray-400 mb-1">Receipt ID</div>
-                                            <div className="text-sm font-mono text-gray-300 break-all">
-                                                {receiptId}
+                                        {receiptId && (
+                                            <div className="bg-gray-800 p-4 rounded-lg border border-gray-700 md:col-span-2">
+                                                <div className="text-sm text-gray-400 mb-1">Receipt ID</div>
+                                                <div className="text-sm font-mono text-gray-300 break-all">
+                                                    {receiptId}
+                                                </div>
                                             </div>
-                                        </div>
+                                        )}
                                     </div>
                                 </div>
 

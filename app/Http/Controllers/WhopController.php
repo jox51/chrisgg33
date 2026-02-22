@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
@@ -59,15 +60,42 @@ class WhopController extends Controller
             return redirect()->back()->with('error', 'Plan not configured. Please contact support.');
         }
 
+        // Create a pending payment record for polling
+        $payment = Payment::create([
+            'plan_type' => $planType,
+            'plan_id' => $planId,
+            'status' => 'pending',
+        ]);
+
         Log::info('Whop checkout attempt', [
             'plan_id' => $planId,
             'plan_type' => $planType,
+            'payment_id' => $payment->id,
         ]);
 
         return Inertia::render('Subscription/WhopCheckout', [
             'planId' => $planId,
             'planType' => $planType,
             'planName' => $this->getPlanName($planType),
+            'paymentId' => $payment->id,
+        ]);
+    }
+
+    /**
+     * Check payment status (polling endpoint)
+     */
+    public function checkPaymentStatus($paymentId)
+    {
+        $payment = Payment::find($paymentId);
+
+        if (!$payment) {
+            return response()->json(['status' => 'not_found'], 404);
+        }
+
+        return response()->json([
+            'status' => $payment->status,
+            'whop_payment_id' => $payment->whop_payment_id,
+            'plan_id' => $payment->plan_id,
         ]);
     }
 
@@ -76,23 +104,25 @@ class WhopController extends Controller
      */
     public function subscriptionSuccess(Request $request)
     {
-        $receiptId = $request->get('receipt_id');
+        $receiptId = $request->get('receipt_id', '');
         $planId = $request->get('plan_id');
 
-        if (!$receiptId || !$planId) {
+        // Only plan_id is required — receipt_id is optional per Whop's API
+        if (!$planId) {
             return redirect('/')->with('error', 'Invalid payment data.');
         }
 
         $planType = $this->determinePlanType($planId);
         $planName = $this->getPlanName($planType);
 
-        Log::info('Whop payment success', [
-            'receipt_id' => $receiptId,
+        Log::info('Whop payment success page visited', [
+            'receipt_id' => $receiptId ?: '(none)',
+            'plan_id' => $planId,
             'plan_type' => $planType,
         ]);
 
         return Inertia::render('Subscription/WhopSuccess', [
-            'receiptId' => $receiptId,
+            'receiptId' => $receiptId ?: '',
             'planDescription' => $planName,
             'status' => 'completed',
             'message' => 'Payment successful! Thank you for your purchase.',

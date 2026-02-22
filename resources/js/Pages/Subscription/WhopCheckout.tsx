@@ -1,14 +1,49 @@
-import React from 'react';
-import { Head, router } from '@inertiajs/react';
+import { useEffect } from 'react';
+import { Head } from '@inertiajs/react';
 import { WhopCheckoutEmbed } from "@whop/checkout/react";
 
 interface WhopCheckoutProps {
     planId: string;
     planType: string;
     planName: string;
+    paymentId: number;
 }
 
-export default function WhopCheckout({ planId, planType, planName }: WhopCheckoutProps) {
+export default function WhopCheckout({ planId, planType, planName, paymentId }: WhopCheckoutProps) {
+    // Poll server for payment completion (webhook updates the Payment record)
+    useEffect(() => {
+        let pollInterval: NodeJS.Timeout;
+
+        const checkPaymentStatus = async () => {
+            try {
+                const response = await fetch(`/whop/payment-status/${paymentId}`);
+
+                if (!response.ok) {
+                    return;
+                }
+
+                const data = await response.json();
+
+                if (data.status === 'paid') {
+                    clearInterval(pollInterval);
+                    window.location.href = `/whop/subscription-success?receipt_id=${data.whop_payment_id || ''}&plan_id=${data.plan_id}`;
+                }
+            } catch (error) {
+                console.error('Error checking payment status:', error);
+            }
+        };
+
+        // Start polling after 5 seconds, then every 3 seconds
+        const startTimeout = setTimeout(() => {
+            pollInterval = setInterval(checkPaymentStatus, 3000);
+        }, 5000);
+
+        return () => {
+            clearTimeout(startTimeout);
+            if (pollInterval) clearInterval(pollInterval);
+        };
+    }, [paymentId]);
+
     if (!planId) {
         return (
             <>
@@ -69,13 +104,6 @@ export default function WhopCheckout({ planId, planType, planName }: WhopCheckou
                                             planId={planId}
                                             theme="dark"
                                             skipRedirect={true}
-                                            onComplete={(completedPlanId, receiptId) => {
-                                                const params = new URLSearchParams({
-                                                    receipt_id: receiptId || '',
-                                                    plan_id: completedPlanId,
-                                                });
-                                                router.visit(`/whop/subscription-success?${params.toString()}`);
-                                            }}
                                         />
                                     </div>
                                 </div>
