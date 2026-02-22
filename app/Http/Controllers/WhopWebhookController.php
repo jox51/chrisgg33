@@ -99,6 +99,11 @@ class WhopWebhookController extends Controller
                 if ($adminEmail) {
                     Mail::to($adminEmail)->send(new AdminNewSubscriptionEmail($buyer, $planName, $price, 'active'));
                 }
+
+                $supportEmail = config('mail.from.address');
+                if ($supportEmail && $supportEmail !== $adminEmail) {
+                    Mail::to($supportEmail)->send(new AdminNewSubscriptionEmail($buyer, $planName, $price, 'active'));
+                }
             } catch (\Exception $e) {
                 Log::error('Failed to send Whop purchase confirmation emails: ' . $e->getMessage());
             }
