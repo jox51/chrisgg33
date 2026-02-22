@@ -17,11 +17,13 @@ class Payment extends Model
         'amount',
         'currency',
         'paid_at',
+        'emails_sent',
     ];
 
     protected $casts = [
         'paid_at' => 'datetime',
         'amount' => 'decimal:2',
+        'emails_sent' => 'boolean',
     ];
 
     public function isPaid(): bool

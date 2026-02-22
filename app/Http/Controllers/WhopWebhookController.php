@@ -141,21 +141,25 @@ class WhopWebhookController extends Controller
             // Read phone saved by the frontend before checkout
             $phone = $payment->phone ?? '';
 
-            // Send confirmation emails
-            try {
-                Mail::to($email)->send(new UserSubscriptionConfirmationEmail($buyer, $planName, $price, 'active', $phone));
+            // Send confirmation emails (only once per payment)
+            if (!$payment->emails_sent) {
+                try {
+                    Mail::to($email)->send(new UserSubscriptionConfirmationEmail($buyer, $planName, $price, 'active', $phone));
 
-                $adminEmail = config('payment.purchase_notification_email');
-                if ($adminEmail) {
-                    Mail::to($adminEmail)->send(new AdminNewSubscriptionEmail($buyer, $planName, $price, 'active', $phone));
-                }
+                    $adminEmail = config('payment.purchase_notification_email');
+                    if ($adminEmail) {
+                        Mail::to($adminEmail)->send(new AdminNewSubscriptionEmail($buyer, $planName, $price, 'active', $phone));
+                    }
 
-                $supportEmail = config('mail.from.address');
-                if ($supportEmail && $supportEmail !== $adminEmail) {
-                    Mail::to($supportEmail)->send(new AdminNewSubscriptionEmail($buyer, $planName, $price, 'active', $phone));
+                    $supportEmail = config('mail.from.address');
+                    if ($supportEmail && $supportEmail !== $adminEmail) {
+                        Mail::to($supportEmail)->send(new AdminNewSubscriptionEmail($buyer, $planName, $price, 'active', $phone));
+                    }
+
+                    $payment->update(['emails_sent' => true]);
+                } catch (\Exception $e) {
+                    Log::error('Failed to send Whop purchase confirmation emails: ' . $e->getMessage());
                 }
-            } catch (\Exception $e) {
-                Log::error('Failed to send Whop purchase confirmation emails: ' . $e->getMessage());
             }
 
             // Cancel Whop membership asynchronously to allow repeat purchases
