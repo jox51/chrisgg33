@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { PageProps } from "@/types";
 import { Head } from "@inertiajs/react";
 import Layout from "@/Components/LandingPage/Layout";
-import PromoBanner from "@/Components/LandingPage/PromoBanner";
 import HeroSection from "@/Components/LandingPage/HeroSection";
 import FeaturesSection from "@/Components/LandingPage/FeaturesSection";
 import HowItWorksSection from "@/Components/LandingPage/HowItWorksSection";
@@ -38,20 +37,16 @@ export default function Welcome({
             <Head title={appName}>
                 <meta
                     name="description"
-                    content="ChrisGG33 — Strategic guidance through astrology, numerology, and esoteric knowledge. Personal consultations with Chris for oppositional year prep, relationship compatibility, and life guidance."
+                    content="ChrisGG33 — Strategic guidance through astrology, numerology, and esoteric knowledge. Personal consultations with Chris for numerology readings, coaching sessions, and life guidance."
                 />
                 <meta
                     name="keywords"
-                    content="astrology, numerology, Chinese astrology, oppositional year, Year of the Horse 2026, Chris GG33, soul mate, compatibility, strategic guidance, esoteric knowledge, gg33 capo"
+                    content="astrology, numerology, Chinese astrology, Chris GG33, strategic guidance, esoteric knowledge, numerology reading, coaching, emergency consultation, gg33 capo"
                 />
                 <meta name="author" content="D28 Services" />
                 <meta name="robots" content="index, follow" />
                 <meta name="googlebot" content="index, follow" />
             </Head>
-            <PromoBanner
-                message="Chinese New Year Special — 25% Off"
-                code="HORSE2026"
-            />
             <Layout laravelVersion={laravelVersion} phpVersion={phpVersion}>
                 <div>
                     <HeroSection

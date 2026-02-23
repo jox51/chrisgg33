@@ -16,7 +16,14 @@
       "WebFetch(domain:registry.npmjs.org)",
       "WebFetch(domain:unpkg.com)",
       "WebFetch(domain:cdn.jsdelivr.net)",
-      "Bash(gh api:*)"
+      "Bash(gh api:*)",
+      "Bash(chmod:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git branch:*)",
+      "Bash(git remote add:*)",
+      "Bash(git push:*)",
+      "Bash(node:*)"
     ],
     "deny": [],
     "ask": []

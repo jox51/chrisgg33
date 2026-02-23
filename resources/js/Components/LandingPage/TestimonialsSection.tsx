@@ -32,7 +32,7 @@ const credentials: Credential[] = [
     },
     {
         icon: Star,
-        text: "GG33\u00b0 Capo",
+        text: "GG33 Capo",
     },
     {
         icon: Crown,

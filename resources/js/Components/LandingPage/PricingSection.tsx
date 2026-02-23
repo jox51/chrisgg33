@@ -4,28 +4,19 @@ import PricingCard from "./Pricing/PricingCard";
 import StaggerChildren, { StaggerItem } from "./Motion/StaggerChildren";
 
 const PricingSection: React.FC = () => {
-    const oppositionFeatures = [
-        "Understand Your Enemy Year",
-        "Identify Opposition Patterns",
-        "Timing & Month-by-Month Guidance",
-        "Protective Remedies & Strategies",
-        "Turn Opposition into Teachers",
-        "45 Minute Call With Chris",
-    ];
-
     const guidanceFeatures = [
+        "Numerology & Life Path Analysis",
         "Personal Development & Decision Making",
         "Accountability & Pattern Recognition",
-        "Historical & Symbolic Frameworks",
-        "One-on-One Mentorship Session",
+        "One-on-One Session with Chris",
         "Practical Life Guidance & Reflection",
     ];
 
     const twoHourFeatures = [
-        "Extended 2.5 Hour Coaching",
+        "Extended 2 Hour Coaching",
         "Best Hourly Rate Available",
         "In-Depth Personal Guidance",
-        "All Strategic Guidance Features",
+        "All Numerology Reading Features",
     ];
 
     const emergencyFeatures = [
@@ -33,22 +24,6 @@ const PricingSection: React.FC = () => {
         "Priority Scheduling",
         "Immediate Expert Assistance",
         "Direct Access to Chris",
-    ];
-
-    const soulMateFeatures = [
-        "Your Soul Mate Date Revealed",
-        "Beneficial Action Days",
-        "Challenging Days to Lay Low",
-        "Personalized to Your Birthday",
-    ];
-
-    const relationshipFeatures = [
-        "Personalized Compatibility Analysis",
-        "Recurring Pattern Insights",
-        "Timing Advice for Breakthroughs",
-        "Remedies & Practical Tools",
-        "Follow-up Support & Guidance",
-        "30 Minute Call With Chris",
     ];
 
     return (
@@ -67,22 +42,11 @@ const PricingSection: React.FC = () => {
                 >
                     <StaggerItem className="h-full">
                         <PricingCard
-                            planName="Oppositional Year Prep"
-                            price="$170"
-                            pricePeriod="one-time"
-                            features={oppositionFeatures}
-                            buttonText="Book Now"
-                            buttonLink="opposition"
-                        />
-                    </StaggerItem>
-
-                    <StaggerItem className="h-full">
-                        <PricingCard
-                            planName="Strategic Guidance"
+                            planName="Numerology Reading"
                             price="$280"
                             pricePeriod="one-time"
                             features={guidanceFeatures}
-                            buttonText="Schedule Now"
+                            buttonText="Book Reading"
                             buttonLink="guidance"
                             isPopular={true}
                             popularText="Most Popular"
@@ -91,11 +55,11 @@ const PricingSection: React.FC = () => {
 
                     <StaggerItem className="h-full">
                         <PricingCard
-                            planName="2.5 Hour Session"
-                            price="$440"
+                            planName="2 Hour Session"
+                            price="$575"
                             pricePeriod="one-time"
                             features={twoHourFeatures}
-                            buttonText="Book 2.5 Hours"
+                            buttonText="Book 2 Hours"
                             buttonLink="two-hour"
                         />
                     </StaggerItem>
@@ -103,33 +67,11 @@ const PricingSection: React.FC = () => {
                     <StaggerItem className="h-full">
                         <PricingCard
                             planName="Emergency Services"
-                            price="$800"
+                            price="$980"
                             pricePeriod="one-time"
                             features={emergencyFeatures}
                             buttonText="Book Emergency"
                             buttonLink="emergency"
-                        />
-                    </StaggerItem>
-
-                    <StaggerItem className="h-full">
-                        <PricingCard
-                            planName="Soul Mate & Dates"
-                            price="$125"
-                            pricePeriod="one-time"
-                            features={soulMateFeatures}
-                            buttonText="Find Your Soul Mate"
-                            buttonLink="soulmate"
-                        />
-                    </StaggerItem>
-
-                    <StaggerItem className="h-full">
-                        <PricingCard
-                            planName="Relationship / Compatibility"
-                            price="$152"
-                            pricePeriod="one-time"
-                            features={relationshipFeatures}
-                            buttonText="Get Insights"
-                            buttonLink="relationship"
                         />
                     </StaggerItem>
                 </StaggerChildren>

@@ -3,122 +3,191 @@ import { motion } from "framer-motion";
 import SectionHeading from "./Shared/SectionHeading";
 import { ScrollReveal } from "./Motion";
 import StaggerChildren, { StaggerItem } from "./Motion/StaggerChildren";
-import { ctaButtonHover, ctaButtonTap, cardHoverSubtle } from "./Motion/variants";
+import { cardHoverSubtle } from "./Motion/variants";
 import { useReducedMotion } from "./Motion/useReducedMotion";
 import {
-    Swords,
+    Compass,
+    Clock,
+    Zap,
+    TrendingUp,
+    Brain,
+    Target,
     Search,
-    CalendarClock,
-    ShieldCheck,
-    Flame,
+    BookOpen,
+    Award,
     Phone,
+    ShieldCheck,
 } from "lucide-react";
 
-const benefits = [
+interface ServiceHighlight {
+    icon: React.ElementType;
+    text: string;
+    detail: string;
+}
+
+interface ServiceDetail {
+    icon: React.ElementType;
+    name: string;
+    tagline: string;
+    description: string;
+    highlights: ServiceHighlight[];
+}
+
+const services: ServiceDetail[] = [
     {
-        icon: Swords,
-        title: "Understand Your Enemy Year",
+        icon: Compass,
+        name: "Numerology Reading",
+        tagline: "Decode your numbers. Sharpen your decisions.",
         description:
-            "Why Rat and Horse clash, and how that energy will play out in 2026.",
+            "A one-on-one session with Chris to break down your personal numerology, uncover recurring life patterns, and build a framework for making better decisions. This isn't a generic reading — it's a practical conversation about your life.",
+        highlights: [
+            {
+                icon: TrendingUp,
+                text: "Personal Development",
+                detail: "Identify where you are, where you're headed, and what's holding you back.",
+            },
+            {
+                icon: Brain,
+                text: "Decision Making",
+                detail: "Use numerology and symbolic frameworks to cut through confusion.",
+            },
+            {
+                icon: Target,
+                text: "Accountability",
+                detail: "Walk away with clear action steps — not just insights.",
+            },
+            {
+                icon: Search,
+                text: "Pattern Recognition",
+                detail: "Spot the cycles that keep repeating so you can finally break them.",
+            },
+        ],
     },
     {
-        icon: Search,
-        title: "Identify Opposition Patterns",
+        icon: Clock,
+        name: "2 Hour Session",
+        tagline: "Go deeper. Cover more ground.",
         description:
-            "Learn where resistance may arise in love, career, health, and finances.",
+            "An extended deep-dive for those who want comprehensive guidance in a single sitting. This session gives Chris enough time to address multiple areas of your life without rushing.",
+        highlights: [
+            {
+                icon: BookOpen,
+                text: "Extended Coaching",
+                detail: "Two full hours of focused, uninterrupted mentorship.",
+            },
+            {
+                icon: Compass,
+                text: "In-Depth Guidance",
+                detail: "Cover multiple topics — career, relationships, timing, and more.",
+            },
+            {
+                icon: Award,
+                text: "Best Value",
+                detail: "Our best hourly rate for those ready to go all in.",
+            },
+        ],
     },
     {
-        icon: CalendarClock,
-        title: "Timing Matters",
+        icon: Zap,
+        name: "Emergency Services",
+        tagline: "When you can't wait. Chris shows up fast.",
         description:
-            "Pinpoint the months when opposition is strongest, so you can plan wisely.",
-    },
-    {
-        icon: ShieldCheck,
-        title: "Protective Remedies",
-        description:
-            "Practical spiritual, energetic, and lifestyle strategies to neutralize negative influences.",
-    },
-    {
-        icon: Flame,
-        title: "Turn Opposition into Teachers",
-        description:
-            "Discover how to use this energy to grow stronger instead of being derailed.",
-    },
-    {
-        icon: Phone,
-        title: "45 Minute Call With Chris",
-        description:
-            "Ask your own questions about the upcoming oppositional year with the best in the industry.",
+            "Life doesn't always give you time to plan. When you need urgent guidance, Chris will make himself available within 28 hours of your order — no waiting weeks for an opening.",
+        highlights: [
+            {
+                icon: Clock,
+                text: "Within 28 Hours",
+                detail: "From order to session — Chris prioritizes you immediately.",
+            },
+            {
+                icon: ShieldCheck,
+                text: "Priority Scheduling",
+                detail: "Jump ahead of the regular calendar for time-sensitive situations.",
+            },
+            {
+                icon: Phone,
+                text: "Direct Access",
+                detail: "A direct line to Chris when you need answers now.",
+            },
+        ],
     },
 ];
-
-const ratYears = [1960, 1972, 1984, 1996, 2008, 2020];
 
 const HowItWorksSection: React.FC = () => {
     const prefersReduced = useReducedMotion();
 
     return (
-        <section id="opposition" className="py-20 bg-stone-900">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section id="services-detail" className="py-20 bg-stone-900">
+            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
                 <SectionHeading
-                    label="Year of the Horse — 2026"
-                    title="Oppositional Year Consultation"
-                    subtitle="2026 brings the Year of the Horse — the direct opposition of those born in the Year of the Rat. In Chinese astrology, this marks an Enemy Year: a cycle when challenges, conflicts, and hidden rivals often come to the surface."
+                    label="Explore"
+                    title="A Deeper Look at Each Service"
+                    subtitle="Every session is one-on-one with Chris — focused on practical life guidance, reflection, and application informed by historical, cultural, and symbolic frameworks."
                 />
 
                 <StaggerChildren
-                    className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12"
-                    stagger={0.07}
+                    className="space-y-10"
+                    stagger={0.12}
                     delayChildren={0.1}
                 >
-                    {benefits.map((benefit) => (
-                        <StaggerItem key={benefit.title}>
+                    {services.map((service) => (
+                        <StaggerItem key={service.name}>
                             <motion.div
-                                className="flex items-start gap-4 p-5 border-[2px] border-stone-700 bg-stone-950"
-                                whileHover={prefersReduced ? undefined : cardHoverSubtle}
+                                className="border-[2px] border-stone-700 bg-stone-950 p-6 sm:p-8"
+                                whileHover={
+                                    prefersReduced
+                                        ? undefined
+                                        : cardHoverSubtle
+                                }
                             >
-                                <benefit.icon
-                                    className="text-yellow-600 flex-shrink-0 mt-1"
-                                    size={22}
-                                    strokeWidth={2}
-                                />
-                                <div>
-                                    <h4 className="font-serif text-lg font-bold text-stone-50 mb-1">
-                                        {benefit.title}
-                                    </h4>
-                                    <p className="text-stone-400 text-sm leading-relaxed">
-                                        {benefit.description}
-                                    </p>
+                                <div className="flex items-start gap-4 mb-5">
+                                    <div className="bg-yellow-600/10 p-3 flex-shrink-0">
+                                        <service.icon
+                                            className="text-yellow-600"
+                                            size={28}
+                                            strokeWidth={2}
+                                        />
+                                    </div>
+                                    <div>
+                                        <h3 className="font-serif text-2xl font-bold text-stone-50">
+                                            {service.name}
+                                        </h3>
+                                        <p className="font-mono text-xs uppercase tracking-wider text-yellow-600 mt-1">
+                                            {service.tagline}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <p className="text-stone-400 text-sm leading-relaxed mb-6">
+                                    {service.description}
+                                </p>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    {service.highlights.map((highlight) => (
+                                        <div
+                                            key={highlight.text}
+                                            className="flex items-start gap-3"
+                                        >
+                                            <highlight.icon
+                                                className="text-yellow-600 flex-shrink-0 mt-0.5"
+                                                size={16}
+                                                strokeWidth={2.5}
+                                            />
+                                            <div>
+                                                <span className="text-stone-200 text-sm font-bold block">
+                                                    {highlight.text}
+                                                </span>
+                                                <span className="text-stone-500 text-xs leading-relaxed">
+                                                    {highlight.detail}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             </motion.div>
                         </StaggerItem>
                     ))}
                 </StaggerChildren>
-
-                <ScrollReveal className="brutalist-border-gold p-6 text-center mb-8">
-                    <p className="font-mono text-xs uppercase tracking-wider text-yellow-600 mb-2">
-                        For Those Born in Rat Years
-                    </p>
-                    <p className="font-serif text-lg text-stone-300">
-                        {ratYears.join(" · ")}
-                    </p>
-                </ScrollReveal>
-
-                <ScrollReveal className="text-center">
-                    <motion.a
-                        href="/subscribe/whop/opposition"
-                        className="inline-block bg-yellow-600 text-stone-950 px-10 py-4 font-bold font-mono text-sm uppercase tracking-widest hover:bg-yellow-500 cursor-pointer mb-4"
-                        whileHover={prefersReduced ? undefined : ctaButtonHover}
-                        whileTap={prefersReduced ? undefined : ctaButtonTap}
-                    >
-                        Prepare Now &mdash; $170
-                    </motion.a>
-                    <p className="text-stone-500 text-xs font-mono max-w-lg mx-auto">
-                        Not year of the rat? Feel free to schedule &mdash; next enemy sign up
-                        will be the Year of the Ox in 2027.
-                    </p>
-                </ScrollReveal>
             </div>
         </section>
     );

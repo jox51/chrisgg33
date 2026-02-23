@@ -35,21 +35,15 @@ return [
     */
 
     'plan_names' => [
-        'opposition' => 'Oppositional Year Prep',
-        'guidance' => 'Strategic Guidance',
-        'two-hour' => '2.5 Hour Session',
+        'guidance' => 'Numerology Reading',
+        'two-hour' => '2 Hour Session',
         'emergency' => 'Emergency Services',
-        'soulmate' => 'Soul Mate & Beneficial Dates',
-        'relationship' => 'Relationship / Compatibility',
     ],
 
     'plan_prices' => [
-        'opposition' => '$170',
         'guidance' => '$280',
-        'two-hour' => '$440',
-        'emergency' => '$800',
-        'soulmate' => '$125',
-        'relationship' => '$152',
+        'two-hour' => '$575',
+        'emergency' => '$980',
     ],
 
     /*
@@ -104,12 +98,9 @@ return [
             'enabled' => env('WHOP_ENABLED', false),
             'api_key' => env('WHOP_API_KEY', ''),
             'api_url' => env('WHOP_API_URL', 'https://api.whop.com/api/v1'),
-            'chris_opposition_plan_id' => env('WHOP_CHRIS_OPPOSITION_PLAN_ID', ''),
             'strategic_guidance_plan_id' => env('WHOP_STRATEGIC_GUIDANCE_PLAN_ID', ''),
             'two_hour_plan_id' => env('WHOP_TWO_HOUR_PLAN_ID', ''),
             'emergency_plan_id' => env('WHOP_EMERGENCY_PLAN_ID', ''),
-            'soulmate_plan_id' => env('WHOP_SOULMATE_PLAN_ID', ''),
-            'relationship_plan_id' => env('WHOP_RELATIONSHIP_PLAN_ID', ''),
             'webhook_secret' => env('WHOP_WEBHOOK_SECRET', ''),
         ],
     ],

@@ -16,28 +16,16 @@ const FAQSection: React.FC = () => {
 
     const faqs: FAQItem[] = [
         {
-            question: "What is an Oppositional Year consultation?",
-            answer: "In Chinese astrology, every 12 years your sign faces its direct opposition — your Enemy Year. The Oppositional Year consultation helps you understand the specific challenges, timing, and remedies to navigate this cycle. For 2026, this applies to those born in the Year of the Rat facing the Year of the Horse.",
-        },
-        {
             question: "How do I know my Chinese zodiac animal?",
             answer: "Your Chinese zodiac animal is determined by your birth year. The cycle repeats every 12 years: Rat, Ox, Tiger, Rabbit, Dragon, Snake, Horse, Goat, Monkey, Rooster, Dog, and Pig. During your session, Chris will confirm your exact sign and any relevant details based on your full birthday.",
         },
         {
-            question: "What happens during a Strategic Guidance session?",
-            answer: "Strategic Guidance sessions focus on personal development, decision making, accountability, and pattern recognition. They are one-on-one mentorship conversations informed by Chris's experience and study of historical, cultural, and symbolic frameworks. These are not instructional courses — they are practical life guidance conversations.",
+            question: "What happens during a Numerology Reading?",
+            answer: "Numerology Reading sessions focus on decoding your personal numbers, life path analysis, decision making, accountability, and pattern recognition. They are one-on-one mentorship conversations informed by Chris's experience and study of numerology, historical, cultural, and symbolic frameworks. These are not instructional courses — they are practical life guidance conversations.",
         },
         {
             question: "How quickly can I book an Emergency session?",
             answer: "Chris will make himself available within 28 hours of your Emergency Services order. This is our priority scheduling option for when you need help as soon as possible.",
-        },
-        {
-            question: "What do I get with the Soul Mate & Dates service?",
-            answer: "You receive three specific dates personalized to your birthday: your Soul Mate date (who your ideal match is), your Beneficial dates (days when things typically go your way and you should take action), and your Challenging dates (days to lay low and not push too hard).",
-        },
-        {
-            question: "Can I book if I'm not born in the Year of the Rat?",
-            answer: "Absolutely. While the Oppositional Year Prep is specifically designed for Rats facing the 2026 Horse year, anyone can schedule a consultation. If you want to start preparing for your next enemy year, feel free to book — the next opposition after Rat will be the Year of the Ox in 2027.",
         },
         {
             question: "How are sessions conducted?",

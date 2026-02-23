@@ -5,12 +5,9 @@ import StaggerChildren, { StaggerItem } from "./Motion/StaggerChildren";
 import { cardHover } from "./Motion/variants";
 import { useReducedMotion } from "./Motion/useReducedMotion";
 import {
-    Shield,
     Compass,
     Clock,
-    AlertTriangle,
-    Heart,
-    Users,
+    Zap,
 } from "lucide-react";
 
 interface Service {
@@ -25,46 +22,25 @@ const FeaturesSection: React.FC = () => {
 
     const services: Service[] = [
         {
-            icon: Shield,
-            title: "Oppositional Year Prep",
-            description:
-                "Prepare, protect, and thrive during your enemy year. Includes a 45-minute call with Chris.",
-            price: "$170",
-        },
-        {
             icon: Compass,
-            title: "Strategic Guidance",
+            title: "Numerology Reading",
             description:
                 "Personal development, decision making, accountability, and pattern recognition with Chris.",
             price: "$280",
         },
         {
             icon: Clock,
-            title: "2.5 Hour Coaching",
+            title: "2 Hour Coaching",
             description:
                 "Extended session for in-depth personal guidance. Our best hourly rate available.",
-            price: "$440",
+            price: "$575",
         },
         {
-            icon: AlertTriangle,
+            icon: Zap,
             title: "Emergency Services",
             description:
                 "Need help as soon as possible? Chris will make himself available within 28 hours of your order.",
-            price: "$800",
-        },
-        {
-            icon: Heart,
-            title: "Soul Mate & Beneficial Dates",
-            description:
-                "Discover your soul mate date, the best days to take action, and which days to lay low.",
-            price: "$125",
-        },
-        {
-            icon: Users,
-            title: "Relationship / Compatibility",
-            description:
-                "30-minute astrology-based relationship insight and healing consultation with Chris.",
-            price: "$152",
+            price: "$980",
         },
     ];
 

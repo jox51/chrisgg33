@@ -265,12 +265,9 @@ class WhopWebhookController extends Controller
         }
 
         $planMap = [
-            'opposition' => 'chris_opposition_plan_id',
             'guidance' => 'strategic_guidance_plan_id',
             'two-hour' => 'two_hour_plan_id',
             'emergency' => 'emergency_plan_id',
-            'soulmate' => 'soulmate_plan_id',
-            'relationship' => 'relationship_plan_id',
         ];
 
         foreach ($planMap as $slug => $configKey) {
